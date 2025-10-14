@@ -1,0 +1,45 @@
+# =========================
+# Java / Spring Boot Project
+# =========================
+
+# Maven build
+/target/
+
+# Logs
+*.log
+logs/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# VS Code
+.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Env / Secret files
+.env
+*.env
+
+# Backup files
+*~
+*.swp
+*.bak
+
+# Generated files
+build/
+dist/
+
+# Other IDE caches
+.gradle/
+.cache/
