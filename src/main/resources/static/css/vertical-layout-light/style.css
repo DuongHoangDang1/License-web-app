@@ -1,3 +1,72 @@
+.sort-bar {
+      margin-top: 23px;
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  padding: 10px 38px;
+  gap: 10px;
+  font-family: "Nunito", sans-serif;
+}
+
+.sort-label {
+  font-size: 14px;
+  color: #666;
+  margin-right: 5px;
+}
+
+.sort-btn {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+
+.sort-btn:hover {
+  border-color: #4b49ac;
+  color: #4b49ac;
+}
+
+.sort-btn.active {
+  background: #4b49ac;
+  color: #fff;
+  border-color: #4b49ac;
+}
+
+.sort-dropdown select {
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.page-control {
+  display: flex;
+  align-items: center;
+  margin-left: auto; /* đẩy về bên phải */
+  gap: 4px;
+}
+
+.page-index {
+  font-size: 14px;
+  color: #555;
+}
+
+.page-btn {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /*------------------------------------------------------------------
  [Master Stylesheet]
 
@@ -109,6 +178,7 @@
     + Auth
   * Horizontal Menu
     + Horizontal
+
 -------------------------------------------------------------------*/
 /*-------------------------------------------------------------------*/
 /* === Import Bootstrap functions and variables === */

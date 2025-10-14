@@ -172,6 +172,28 @@
         </nav>
         <!-- partial -->
         <div class="main-panel">
+
+            <div class="sort-bar">
+                <span class="sort-label">Sắp xếp theo</span>
+                <button class="sort-btn">Phổ Biến</button>
+                <button class="sort-btn active">Mới Nhất</button>
+                <button class="sort-btn">Bán Chạy</button>
+
+                <div class="sort-dropdown">
+                    <select>
+                        <option selected disabled>Giá</option>
+                        <option value="asc">Giá: Thấp đến Cao</option>
+                        <option value="desc">Giá: Cao đến Thấp</option>
+                    </select>
+                </div>
+
+                <div class="page-control">
+                    <span class="page-index">1/14</span>
+                    <button class="page-btn prev" disabled>&lt;</button>
+                    <button class="page-btn next">&gt;</button>
+                </div>
+            </div>
+
             <div class="content-wrapper">
                 <div class="row">
 
@@ -207,10 +229,12 @@
 
                 </div>
 
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-outline-secondary"><-</button>
-                    <button type="button" class="btn btn-outline-secondary">1</button>
-                    <button type="button" class="btn btn-outline-secondary">-></button>
+                <div class="sort-bar">
+                    <div class="page-control">
+                        <span class="page-index">1/14</span>
+                        <button class="page-btn prev" disabled>&lt;</button>
+                        <button class="page-btn next">&gt;</button>
+                    </div>
                 </div>
 
 
