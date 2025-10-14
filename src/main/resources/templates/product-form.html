@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm sản phẩm</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<h2>Thêm sản phẩm mới</h2>
+
+<form th:action="@{/products/save}" th:object="${product}" method="post">
+
+    <div>
+        <label for="name">Tên sản phẩm:</label>
+        <input type="text" id="name" th:field="*{name}" required>
+    </div>
+
+    <div>
+        <label for="description">Mô tả:</label>
+        <textarea id="description" th:field="*{description}" rows="3"></textarea>
+    </div>
+
+    <div>
+        <label for="imageUrl">Hình ảnh:</label>
+        <textarea id="imageUrl" th:field="*{imageUrl}" rows="3"></textarea>
+    </div>
+
+    <div>
+        <label for="price">Giá (VND):</label>
+        <input type="number" id="price" th:field="*{price}" required>
+    </div>
+
+    <div>
+        <label for="licenseDurationDays">Thời hạn license (ngày):</label>
+        <input type="number" id="licenseDurationDays" th:field="*{licenseDurationDays}" required>
+    </div>
+
+    <button type="submit">Lưu</button>
+</form>
+
+<br>
+<a th:href="@{/admin/products/list}">⬅ Danh sách sản phẩm</a>
+
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>License</title>
+    <link rel="stylesheet" th:href="@{./css/vendors/feather/feather.css}">
+    <link rel="stylesheet" th:href="@{./css/vendors/ti-icons/css/themify-icons.css}">
+    <link rel="stylesheet" th:href="@{./css/vendors/css/vendor.bundle.base.css}">
+    <link rel="stylesheet" th:href="@{./css/vertical-layout-light/style.css}">
+    <link rel="shortcut icon" th:href="@{./css/images/favicon.png}" />
+</head>
+
+<body>
+<div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+            <h3 class="navbar-brand brand-logo mr-5 mr-2">License</h3>
+            <a class="navbar-brand brand-logo-mini" href="../../index.html"><img src="./css/images/logo-lock.svg" alt="logo"/></a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                <span class="icon-menu"></span>
+            </button>
+            <ul class="navbar-nav mr-lg-2">
+                <li class="nav-item nav-search d-none d-lg-block">
+                    <div class="input-group">
+                        <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
+                <span class="input-group-text" id="search">
+                  <i class="icon-search"></i>
+                </span>
+                        </div>
+                        <input type="text" class="form-control" id="navbar-search-input" placeholder="Tìm Kiếm sản phẩm" aria-label="search" aria-describedby="search">
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav navbar-nav-right">
+                <li class="nav-item dropdown">
+                    <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+                        <i class="icon-bell mx-0"></i>
+                        <span class="count"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+                        <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+
+                        <a class="dropdown-item preview-item">
+                            <div class="preview-thumbnail">
+                                <div class="preview-icon bg-info">
+                                    <i class="ti-user mx-0"></i>
+                                </div>
+                            </div>
+                            <div class="preview-item-content">
+                                <h6 class="preview-subject font-weight-normal">New user registration</h6>
+                                <p class="font-weight-light small-text mb-0 text-muted">
+                                    2 days ago
+                                </p>
+                            </div>
+                        </a>
+
+                        <a class="dropdown-item preview-item">
+                            <div class="preview-thumbnail">
+                                <div class="preview-icon bg-info">
+                                    <i class="ti-user mx-0"></i>
+                                </div>
+                            </div>
+                            <div class="preview-item-content">
+                                <h6 class="preview-subject font-weight-normal">New user registration</h6>
+                                <p class="font-weight-light small-text mb-0 text-muted">
+                                    2 days ago
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                </li>
+
+
+
+
+                <li class="nav-item nav-profile dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                        <img src="data:image/png;base64,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" alt="profile"/>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+
+                        <div class="coins-badge"
+                             style="display:inline-flex;align-items:center;background-color:#ffffff;color:#F57F17;font-weight:600;border-radius:20px;padding:0px;font-size:15px;">
+                            <i class="ti-money"
+                               style="font-size:15px;margin-right:3px;color:#ff9800; position: relative; top: 2px; left: 49px;"></i>
+                            <span style="position: relative; top: 3px; left: 50px;"><span th:text="${#numbers.formatDecimal(wallet.getBalance(), 0, 'COMMA', 0, 'POINT')} + ' ₫'"></span></span>
+                        </div>
+
+
+                        <a class="dropdown-item">
+                            <i class="ti-user text-primary"></i>
+                            <div th:text="${user.getUsername()}" style="color: #0d3057"></div>
+                        </a>
+
+                        <a class="dropdown-item">
+                            <i class="ti-settings text-primary"></i>
+                            Settings
+                        </a>
+                        <a class="dropdown-item">
+                            <i class="ti-power-off text-primary"></i>
+                            Logout
+                        </a>
+
+                    </div>
+                </li>
+                <li class="nav-item nav-settings d-none d-lg-flex">
+                    <a class="nav-link" href="#">
+                        <i class="icon-ellipsis"></i>
+                    </a>
+                </li>
+            </ul>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                <span class="icon-menu"></span>
+            </button>
+        </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+
+
+        <!-- partial -->
+        <!-- partial:../../partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="./typography.html">
+                        <i class="icon-grid menu-icon"></i>
+                        <span class="menu-title">Trang chủ</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                        <i class="icon-layout menu-icon"></i>
+                        <span class="menu-title">Giao dịch</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="ui-basic">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"> <a class="nav-link" href="#">Nạp tiền</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="#">Rút tiền</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="#">Lịch sử giao dịch</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+                        <i class="icon-columns menu-icon"></i>
+                        <span class="menu-title">My products</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="form-elements">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"><a class="nav-link" href="#">Đơn hàng</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="icon-paper menu-icon"></i>
+                        <span class="menu-title">Phản hồi</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+
+
+
+                    <div th:each="p : ${products}" class="col-md-3 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body text-center" >
+
+                                <!-- Ảnh sản phẩm -->
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2n3VUYauwn3jOrzsHnk3Gmf-K6x37JHcSrA&s"
+                                     alt="Sản phẩm"
+                                     class="img-fluid mb-3"
+                                     style="max-height: 200px; width: 100%; object-fit: cover; border-radius: 8px;">
+
+                                <!-- Tên sản phẩm -->
+                                <h4 th:text="${p.name}" class="card-title mb-3"></h4>
+
+                                <!-- Giá + nút mua -->
+                                <div class="media d-flex align-items-start">
+                                    <div class="media-body text-start">
+                                        <p th:text="'Giá: ' + ${p.price} + '₫'" class="fw-bold mb-3"></p>
+                                        <button type="button" class="btn btn-info w-100" style="padding: 10px 0;">
+                                            Chi tiết
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-outline-secondary"><-</button>
+                    <button type="button" class="btn btn-outline-secondary">1</button>
+                    <button type="button" class="btn btn-outline-secondary">-></button>
+                </div>
+
+
+            </div>
+            <!-- content-wrapper ends -->
+            <!-- partial:../../partials/_footer.html -->
+            <footer class="footer">
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+
+                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">License system<i class="ti-heart text-danger ml-1"></i></span>
+                </div>
+            </footer>
+            <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<script th:src="@{/css/vendors/js/vendor.bundle.base.js}"></script>
+<script th:src="@{/js/off-canvas.js}"></script>
+<script th:src="@{/js/hoverable-collapse.js}"></script>
+<script th:src="@{/js/template.js}"></script>
+<script th:src="@{/js/settings.js}"></script>
+<script th:src="@{/js/todolist.js}"></script>
+</body>
+</html>
