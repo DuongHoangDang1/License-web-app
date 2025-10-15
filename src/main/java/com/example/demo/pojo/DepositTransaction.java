@@ -4,15 +4,22 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "deposit_transactions")
+@Table(
+        name = "deposit_transactions",
+        indexes = {
+                @Index(columnList = "txn_ref", unique = true),
+                @Index(columnList = "userId"),
+                @Index(columnList = "status")
+        }
+)
 public class DepositTransaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "txn_ref", unique = true, nullable = false)
-    private String txnRef;   // vnp_TxnRef — dùng để chống cộng tiền 2 lần
+    @Column(name = "txn_ref", unique = true, nullable = false, length = 100)
+    private String txnRef; //chống cộng 2 lần
 
     @Column(nullable = false)
     private Long userId;
@@ -21,15 +28,24 @@ public class DepositTransaction {
     private Long amount;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private Status status = Status.PENDING;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column
+    private LocalDateTime updatedAt;
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 
     public enum Status {
         PENDING, SUCCESS, FAILED
     }
+
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -48,5 +64,7 @@ public class DepositTransaction {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-}
 
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+}

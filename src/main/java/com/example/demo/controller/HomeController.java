@@ -35,10 +35,13 @@ public class HomeController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
-            Optional<User> user = userRepository.findByUsername(auth.getName());
-            Optional<UserWallet> wallet = walletService.findByWalletId(user.get().getId());
-            model.addAttribute("user", user.get());
-            model.addAttribute("wallet", wallet.get());
+            userRepository.findByUsername(auth.getName()).ifPresent(user -> {
+                model.addAttribute("user", user);
+
+                walletService.findByWalletId(user.getId()).ifPresent(wallet ->
+                        model.addAttribute("wallet", wallet)
+                );
+            });
         }
         return "home";
     }

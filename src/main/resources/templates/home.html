@@ -10,6 +10,21 @@
     <link rel="stylesheet" th:href="@{./css/vendors/css/vendor.bundle.base.css}">
     <link rel="stylesheet" th:href="@{./css/vertical-layout-light/style.css}">
     <link rel="shortcut icon" th:href="@{./css/images/favicon.png}" />
+
+    <style>
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .bbb {
+            color: #fff;
+            background-color: #4b49ac;
+            border-color: #4b49ac;
+        }
+        .bbb:hover {background-color:rgb(75 73 172 / 80%);}
+    </style>
+
 </head>
 
 <body>
@@ -141,9 +156,9 @@
                     </a>
                     <div class="collapse" id="ui-basic">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="#">Nạp tiền</a></li>
+                            <li class="nav-item"> <a class="nav-link" th:href="@{/wallet/topupvnp}">Nạp tiền</a></li>
                             <li class="nav-item"> <a class="nav-link" href="#">Rút tiền</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">Lịch sử giao dịch</a></li>
+                            <li class="nav-item"> <a class="nav-link" th:href="@{/wallet/history}">Lịch sử giao dịch</a></li>
                         </ul>
                     </div>
                 </li>
@@ -155,7 +170,7 @@
                     </a>
                     <div class="collapse" id="form-elements">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"><a class="nav-link" href="#">Đơn hàng</a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/order/history}">Đơn hàng</a></li>
                         </ul>
                     </div>
                 </li>
@@ -173,7 +188,7 @@
         <!-- partial -->
         <div class="main-panel">
 
-            <div class="sort-bar">
+            <div class="sort-bar" style="margin-bottom: 23px;">
                 <span class="sort-label">Sắp xếp theo</span>
                 <button class="sort-btn">Phổ Biến</button>
                 <button class="sort-btn active">Mới Nhất</button>
@@ -200,27 +215,34 @@
 
 
                     <div th:each="p : ${products}" class="col-md-3 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body text-center" >
+                        <div class="card shadow-sm border-0 h-100 product-card" style="transition: transform 0.2s ease;">
+                            <div class="card-body d-flex flex-column p-3 text-center">
 
                                 <!-- Ảnh sản phẩm -->
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2n3VUYauwn3jOrzsHnk3Gmf-K6x37JHcSrA&s"
-                                     alt="Sản phẩm"
-                                     class="img-fluid mb-3"
-                                     style="max-height: 200px; width: 100%; object-fit: cover; border-radius: 8px;">
+                                <div class="mb-3">
+                                    <!--                                    <img th:src="${p.imageUrl}"-->
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2n3VUYauwn3jOrzsHnk3Gmf-K6x37JHcSrA&s"
+                                         alt="Sản phẩm"
+                                         class="img-fluid"
+                                         style="max-height: 180px; width: 100%; object-fit: cover; border-radius: 10px;">
+                                </div>
 
                                 <!-- Tên sản phẩm -->
-                                <h4 th:text="${p.name}" class="card-title mb-3"></h4>
+                                <h5 th:text="${p.name}"
+                                    class="card-title mb-2 text-truncate flex-grow-0"
+                                    style="font-weight: 600; color: #333;"></h5>
 
-                                <!-- Giá + nút mua -->
-                                <div class="media d-flex align-items-start">
-                                    <div class="media-body text-start">
-                                        <p th:text="'Giá: ' + ${p.price} + '₫'" class="fw-bold mb-3"></p>
-                                        <button type="button" class="btn btn-info w-100" style="padding: 10px 0;">
-                                            Chi tiết
-                                        </button>
-                                    </div>
-                                </div>
+                                <!-- Giá -->
+                                <p th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')} + ' ₫'"
+                                   class="fw-bold mb-3 flex-grow-0"
+                                   style="font-size: 1.1rem; color: #d32f2f;"></p>
+
+                                <!-- Nút hành động -->
+                                <a th:href="@{/products/product/{id}(id=${p.id})}"
+                                   class="btn btn-success w-100 mt-auto bbb"
+                                   style="font-weight: 500; border-radius: 6px;">
+                                    Chi tiết
+                                </a>
 
                             </div>
                         </div>

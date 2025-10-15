@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lịch sử đơn hàng</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body class="container mt-4">
+
+<h3>Lịch sử đơn hàng</h3>
+<hr>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Mã đơn</th>
+        <th>Ngày đặt</th>
+        <th>Trạng thái</th>
+        <th>Tổng tiền</th>
+        <th>Chi tiết</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="o : ${orders}">
+        <td th:text="${o.id}"></td>
+        <td th:text="${#temporals.format(o.orderDate, 'dd/MM/yyyy HH:mm')}"></td>
+        <td th:text="${o.status}"></td>
+        <td th:text="${#numbers.formatDecimal(o.totalAmount, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
+        <td>
+            <a class="btn btn-sm btn-primary"
+               th:href="@{/order/detail/{id}(id=${o.id})}">
+                Xem chi tiết
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

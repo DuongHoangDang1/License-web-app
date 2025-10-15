@@ -4,10 +4,7 @@ import com.example.demo.pojo.Product;
 import com.example.demo.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/products")
@@ -28,6 +25,14 @@ public class ProductController {
     public String saveProduct(@ModelAttribute Product product) {
         productService.save(product);
         return "redirect:/home";
+    }
+
+    @GetMapping("/product/{id}")
+    public String getProductDetail(@PathVariable Long id, Model model) {
+        Product product = productService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        model.addAttribute("product", product);
+        return "product-detail";
     }
 
 }

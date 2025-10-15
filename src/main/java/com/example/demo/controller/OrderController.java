@@ -3,17 +3,18 @@ package com.example.demo.controller;
 import com.example.demo.pojo.Order;
 import com.example.demo.pojo.Product;
 import com.example.demo.service.CheckoutService;
+import com.example.demo.service.OrderService;
 import com.example.demo.service.ProductService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/order")
@@ -24,6 +25,8 @@ public class OrderController{
     private CheckoutService checkoutService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("/checkout")
     public String showCheckoutForm(@RequestParam Long productId, Model model) {
@@ -50,4 +53,22 @@ public class OrderController{
 
         return "checkout-success";
     }
+
+
+    @GetMapping("/history")
+    public String orderHistory(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        var user = userService.findByUsername(userDetails.getUsername()).orElseThrow();
+        List<Order> orders = orderService.getOrdersByUserId(user.getId());
+        model.addAttribute("orders", orders);
+        return "order-history";
+    }
+
+    @GetMapping("/detail/{id}")
+    public String orderDetail(@PathVariable Long id, Model model) {
+        Order order = orderService.getOrderById(id).orElseThrow();
+        model.addAttribute("order", order);
+        model.addAttribute("items", order.getOrderItems());
+        return "order-item";
+    }
+
 }

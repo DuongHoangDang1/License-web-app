@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${product.name} + ' | Chi tiết sản phẩm'"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .product-image { max-width: 100%; border-radius: 10px; }
+        .rating i { color: gold; }
+        .buy-btn { min-width: 150px; }
+        .card {
+    border-radius: 12px;
+    background-color: #fff;
+}
+
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+
+    <div class="row">
+        <!-- Ảnh sản phẩm -->
+        <div class="col-md-6 text-center">
+<!--            <img th:src="${product.imageUrl}" alt="Product image" class="product-image shadow">-->
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2n3VUYauwn3jOrzsHnk3Gmf-K6x37JHcSrA&s" alt="Product image" class="product-image shadow">
+        </div>
+
+        <!-- Thông tin sản phẩm -->
+        <div class="col-md-6">
+            <h2 th:text="${product.name}" class="mb-3"></h2>
+
+            <div class="rating mb-3">
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star"></i>
+                <span class="text-muted">(120 đánh giá)</span>
+            </div>
+
+            <h3 class="text-danger mb-3" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + '₫'"></h3>
+
+            <p class="mb-3"><strong>Thời hạn giấy phép:</strong>
+                <span th:text="${product.licenseDurationDays + ' ngày'}"></span>
+            </p>
+
+            <p class="text-secondary mb-4"></p>
+
+            <div class="d-flex gap-3">
+                <button class="btn btn-outline-primary buy-btn">Thêm vào giỏ</button>
+                <a th:href="@{/order/checkout(productId=${product.id})}" class="btn btn-danger buy-btn">Mua ngay</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mô tả chi tiết -->
+    <div class="card mt-5 shadow-sm border-0">
+        <div class="card-body">
+            <h4 class="card-title mb-3">Mô tả chi tiết</h4>
+            <p class="card-text text-secondary" th:text="${product.description}">
+                Đây là mô tả chi tiết sản phẩm, trình bày trong khung đẹp mắt.
+            </p>
+        </div>
+    </div>
+
+    <!-- Đánh giá người dùng -->
+    <div class="card mt-4 shadow-sm border-0">
+        <div class="card-body">
+            <h4 class="card-title mb-3">Đánh giá sản phẩm</h4>
+            <p class="text-muted fst-italic">
+                Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá sản phẩm này!
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
