@@ -9,6 +9,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
+        .cna {
+            color: #4b49ac;
+        }
+
+        .sb {   background-color: #4b49ac;}
+        .sb:hover { background: rgb(75 73 172 / 80%); }
+
         body {
             background-color: #e9f0fa; /* soft background */
         }
@@ -57,7 +64,7 @@
 <body class="d-flex align-items-center justify-content-center vh-100">
 
 <div class="card p-4" style="width: 100%; max-width: 400px;">
-    <h3 class="text-center mb-4">Login</h3>
+    <h3 class="text-center mb-4 cna">Login</h3>
 
     <p th:if="${param.error}" class="err1">Wrong username or password</p>
     <p th:if="${param.logout}" class="err2">Logout success</p>
@@ -80,19 +87,18 @@
                 <input type="checkbox" class="form-check-input" name="rememberMe" id="remember">
                 <label class="form-check-label" for="remember">Remember me</label>
             </div>
-            <a href="#" class="text-decoration-none">Forgot password?</a>
+            <a href="#" class="text-decoration-none cna">Forgot password?</a>
         </div>
 
         <!-- Button -->
         <div class="d-grid">
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="submit" class="btn btn-primary sb">Login</button>
         </div>
     </form>
 
     <!-- Register link -->
     <p class="text-center mt-3 mb-0 text-muted">
-        Don’t have an account?
-        <a th:href="@{/signup}" class="fw-bold">Sign up</a>
+        <a th:href="@{/signup}" class="fw-bold cna">Create new account</a>
     </p>
 </div>
 

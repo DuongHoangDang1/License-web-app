@@ -6,6 +6,7 @@ import com.example.demo.service.CheckoutService;
 import com.example.demo.service.OrderService;
 import com.example.demo.service.ProductService;
 import com.example.demo.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -50,7 +51,6 @@ public class OrderController{
 
         Order order = checkoutService.checkout(userId, productId, quantity);
         model.addAttribute("order", order);
-
         return "checkout-success";
     }
 
