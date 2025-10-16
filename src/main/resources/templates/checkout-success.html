@@ -37,7 +37,7 @@
         <p>Tổng tiền: <strong th:text="${order.totalAmount}"></strong> VNĐ</p>
         <p>Trạng thái: <strong th:text="${order.status}"></strong></p>
     </div>
-    <a href="/" class="btn btn-secondary">Quay về trang chủ</a>
+    <a th:href="@{/home}" class="btn btn-secondary">Quay về trang chủ</a>
 </div>
 </body>
 </html>
