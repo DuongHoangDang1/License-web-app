@@ -45,11 +45,13 @@
                 <li class="nav-item nav-search d-none d-lg-block">
                     <div class="input-group">
                         <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
-                <span class="input-group-text" id="search">
-                  <i class="icon-search"></i>
-                </span>
+                            <span class="input-group-text" id="search">
+                              <i class="icon-search"></i>
+                            </span>
                         </div>
-                        <input type="text" class="form-control" id="navbar-search-input" placeholder="Tìm Kiếm sản phẩm" aria-label="search" aria-describedby="search">
+                        <form th:action="@{/search}" method="get">
+                            <input type="text" name="keyword" class="form-control" id="navbar-search-input" placeholder="Tìm Kiếm sản phẩm" aria-label="search" aria-describedby="search">
+                        </form>
                     </div>
                 </li>
             </ul>
