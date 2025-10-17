@@ -28,4 +28,8 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
+    public List<Product> searchByName(String keyword) {
+        return productRepository.findByNameContainingIgnoreCase(keyword);
+    }
+
 }

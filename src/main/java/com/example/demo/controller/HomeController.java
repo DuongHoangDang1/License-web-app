@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.pojo.Product;
 import com.example.demo.pojo.User;
 import com.example.demo.pojo.UserWallet;
 import com.example.demo.repository.UserRepository;
@@ -12,8 +13,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -51,6 +54,40 @@ public class HomeController {
             model.addAttribute("successMessage", msg);
             ses.removeAttribute("successMessage");
         }
+        return "home";
+    }
+
+    @GetMapping("/search")
+    public String listProducts(@RequestParam(value = "keyword", required = false) String keyword, Model model,
+                               HttpSession ses) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
+            userRepository.findByUsername(auth.getName()).ifPresent(user -> {
+                model.addAttribute("user", user);
+
+                walletService.findByWalletId(user.getId()).ifPresent(wallet ->
+                        model.addAttribute("wallet", wallet)
+                );
+            });
+        }
+        String msg = null;
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            List<Product> searchList = productService.searchByName(keyword);
+            if(searchList.isEmpty()) {
+                msg = "Từ khóa không hợp lệ";
+            }
+            model.addAttribute("products", searchList);
+        } else {
+            model.addAttribute("products", productService.findAll());
+            msg = "Không tìm thấy sản phẩm";
+        }
+
+
+        if(msg != null) {
+            model.addAttribute("successMessage", msg);
+            ses.removeAttribute("successMessage");
+        }
+
         return "home";
     }
 
