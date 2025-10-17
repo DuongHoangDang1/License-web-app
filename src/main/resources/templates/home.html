@@ -114,10 +114,11 @@
                             <div th:text="${user.getUsername()}" style="color: #0d3057"></div>
                         </a>
 
-                        <a class="dropdown-item">
+                        <a class="dropdown-item" th:href="@{/settings}">
                             <i class="ti-settings text-primary"></i>
                             Settings
                         </a>
+
 
                         <span class="dropdown-item">
                             <i class="ti-power-off text-primary"></i>
@@ -151,7 +152,7 @@
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <ul class="nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="./typography.html">
+                    <a class="nav-link" href="./typograPhphy.html">
                         <i class="icon-grid menu-icon"></i>
                         <span class="menu-title">Trang chủ</span>
                     </a>
@@ -183,6 +184,12 @@
                     </div>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/cart}">
+                        <i class="ti-shopping-cart menu-icon"></i>
+                        <span class="menu-title">Giỏ hàng</span>
+                    </a>
+                </li>
 
 
                 <li class="nav-item">
