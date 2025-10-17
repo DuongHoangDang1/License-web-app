@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cài Đặt Hồ Sơ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #4b49ac;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container { max-width: 700px; margin: 0 auto; }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #4b49ac;
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 { font-size: 24px; }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover { background: rgba(255, 255, 255, 0.3); }
+
+        .alert {
+            margin: 20px 30px;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        form { padding: 30px; }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input:disabled {
+            background: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .info-box.warning { border-left-color: #f59e0b; }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #666;
+            border: 2px solid #e0e0e0;
+        }
+
+        .btn-secondary:hover {
+            background: #e8e8e8;
+        }
+
+        @media (max-width: 768px) {
+            .header { flex-direction: column; gap: 15px; padding: 20px; }
+            form { padding: 20px; }
+            .form-row { grid-template-columns: 1fr; }
+            .form-actions { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1><i class="fas fa-user-cog"></i> Cài Đặt Hồ Sơ</h1>
+            <a th:href="${backUrl}" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
+
+        </div>
+
+        <div th:if="${successMessage}" class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
+            <span th:text="${successMessage}"></span>
+        </div>
+
+        <div th:if="${errorMessage}" class="alert alert-error">
+            <i class="fas fa-exclamation-circle"></i>
+            <span th:text="${errorMessage}"></span>
+        </div>
+
+        <form th:action="@{/settings/update}" th:object="${user}" method="post">
+        <input type="hidden" name="id" th:value="${user.id}">
+
+            <div class="form-group">
+                <label><i class="fas fa-user-circle"></i> Tên đăng nhập</label>
+                <input type="text" name="username" th:value="${user.username}" required maxlength="50">
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-envelope"></i> Email</label>
+                <input type="email" name="email" th:value="${user.email}" required maxlength="50">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label><i class="fas fa-id-card"></i> Họ</label>
+                    <input type="text" name="firstName" th:value="${user.firstName}" required maxlength="50">
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-id-card"></i> Tên</label>
+                    <input type="text" name="lastName" th:value="${user.lastName}" required maxlength="50">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-map-marker-alt"></i> Địa chỉ</label>
+                <input type="text" name="address" th:value="${user.address}" placeholder="Nhập địa chỉ của bạn" maxlength="255">
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-user-tag"></i> Vai trò</label>
+                <input type="text" th:value="${user.role}" disabled>
+                <small>Vai trò không thể thay đổi</small>
+            </div>
+
+            <div class="info-box" th:if="${user.isVerified}">
+                <i class="fas fa-check-circle" style="color: #10b981;"></i> Tài khoản đã được xác thực
+            </div>
+
+            <div class="info-box warning" th:unless="${user.isVerified}">
+                <i class="fas fa-exclamation-circle" style="color: #f59e0b;"></i> Tài khoản chưa được xác thực
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Lưu Thay Đổi
+                </button>
+                <button type="reset" class="btn btn-secondary">
+                    <i class="fas fa-undo"></i> Đặt Lại
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

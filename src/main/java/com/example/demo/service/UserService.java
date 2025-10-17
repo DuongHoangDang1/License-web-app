@@ -4,6 +4,7 @@ import com.example.demo.pojo.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,4 +22,15 @@ public class UserService {
         return userRepository.findByUsername(name);
     }
 
+    public User getUserById(Integer id) {
+        return userRepository.findById(Long.valueOf(id)).orElse(null);
+    }
+
+    public User updateUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public void save(User user) {
+        userRepository.save(user);
+    }
 }
