@@ -48,10 +48,11 @@ public class ProfileController {
         existingUser.setEmail(updatedUser.getEmail());
         existingUser.setAddress(updatedUser.getAddress());
 
-        userService.updateUser(existingUser);
+        userService.updateUser(updatedUser.getId(), existingUser);
 
         model.addAttribute("success", "Cập nhật hồ sơ thành công!");
         model.addAttribute("user", existingUser);
+        model.addAttribute("backUrl", "/home");
         return "profile";
     }
 

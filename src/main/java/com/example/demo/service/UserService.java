@@ -2,6 +2,9 @@ package com.example.demo.service;
 
 import com.example.demo.pojo.User;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.UserWalletRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -9,6 +12,8 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    @Autowired
+    private UserWalletRepository UserWalletRepository;
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -22,7 +27,20 @@ public class UserService {
     }
 
 
-    public User updateUser(User user) {
+    public User updateUser(Long id, User user) {
         return userRepository.save(user);
     }
+
+    public Object findAll() {
+        return userRepository.findAll();
+    }
+
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+@Transactional
+    public void deleteById(Long id) {
+        UserWalletRepository.deleteByUserId(id);
+        userRepository.deleteById(id);    }
+
 }

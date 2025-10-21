@@ -27,7 +27,7 @@ public class User {
     @Column(name = "reset_token")
     private String resetToken;
 
-    @Column(name = "fullname", nullable = false)
+    @Column(name = "fullname", nullable = true)
     private String fullname;
 
     @Column(name = "address", length = 255)
