@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Phản hồi khách hàng</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 60%;
+            margin: 40px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4b4bff;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input, textarea {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #4b4bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3737e6;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Gửi phản hồi của bạn</h1>
+    <form th:action="@{/feedback/submit}" th:object="${feedback}" method="post">
+        <input type="text" th:field="*{name}" placeholder="Tên của bạn" required>
+        <input type="email" th:field="*{email}" placeholder="Email" required>
+        <textarea th:field="*{message}" placeholder="Nội dung phản hồi" rows="5" required></textarea>
+        <div class="button-row">
+            <button type="submit">Gửi phản hồi</button>
+
+            <a th:href="@{/feedback/list}" class="btn-link">
+                <button type="button">Xem phản hồi</button>
+            </a>
+
+            <a th:href="@{/home}" class="btn-link">
+                <button type="button">Trở về</button>
+            </a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -66,7 +66,7 @@ public class AdminController {
 
     @GetMapping("topup-vnpay")
     public String showTopupPage() {
-        return "topup-vnpay";
+        return "topup-vnp";
     }
 
 
