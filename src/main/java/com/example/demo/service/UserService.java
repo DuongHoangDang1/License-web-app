@@ -27,7 +27,6 @@ public class UserService {
         return userRepository.findByUsername(name);
     }
 
-<<<<<<< HEAD
     public User getUserById(Integer id) {
         return userRepository.findById(Long.valueOf(id)).orElse(null);
     }
@@ -39,11 +38,9 @@ public class UserService {
     public void save(User user) {
         userRepository.save(user);
     }
-=======
-
-    public User updateUser(Long id, User user) {
-        return userRepository.save(user);
-    }
+//    public User updateUser(Long id, User user) {
+//        return userRepository.save(user);
+//    }
 
     public Object findAll() {
         return userRepository.findAll();
@@ -57,5 +54,4 @@ public class UserService {
         UserWalletRepository.deleteByUserId(id);
         userRepository.deleteById(id);    }
 
->>>>>>> 5ea6ed9c6b1aa51da501d16c08c7b7030e6ae30f
 }
