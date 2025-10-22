@@ -10,6 +10,8 @@
     <link rel="stylesheet" th:href="@{./css/vendors/css/vendor.bundle.base.css}">
     <link rel="stylesheet" th:href="@{./css/vertical-layout-light/style.css}">
     <link rel="shortcut icon" th:href="@{./css/images/favicon.png}" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+
 
     <style>
         .product-card:hover {
@@ -112,15 +114,29 @@
                             <div th:text="${user.getUsername()}" style="color: #0d3057"></div>
                         </a>
 
+<<<<<<< HEAD
                         <a class="dropdown-item" th:href="@{settings}">
+=======
+                        <a class="dropdown-item" th:href="@{/settings}">
+>>>>>>> 5ea6ed9c6b1aa51da501d16c08c7b7030e6ae30f
                             <i class="ti-settings text-primary"></i>
                             Settings
                         </a>
 
+<<<<<<< HEAD
                         <a class="dropdown-item" th:href="@{/logout}">
+=======
+
+                        <span class="dropdown-item">
+>>>>>>> 5ea6ed9c6b1aa51da501d16c08c7b7030e6ae30f
                             <i class="ti-power-off text-primary"></i>
-                            Logout
-                        </a>
+                            <form th:action="@{/logout}" method="post" style="display:inline;">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                <button type="submit" style="all: unset; cursor: pointer;">
+                                    Logout
+                                </button>
+                            </form>
+                        </span>
 
 
                     </div>
@@ -145,7 +161,7 @@
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <ul class="nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="./typography.html">
+                    <a class="nav-link" href="./typograPhphy.html">
                         <i class="icon-grid menu-icon"></i>
                         <span class="menu-title">Trang chủ</span>
                     </a>
@@ -178,13 +194,13 @@
                 </li>
 
 
-
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" th:href="@{/feedback/form}">
                         <i class="icon-paper menu-icon"></i>
                         <span class="menu-title">Phản hồi</span>
                     </a>
                 </li>
+
             </ul>
         </nav>
         <!-- partial -->
@@ -281,6 +297,30 @@
     </div>
     <!-- page-body-wrapper ends -->
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script th:if="${successMessage}">
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "timeOut": "5000",
+        "positionClass": "toast-bottom-right"
+    };
+    toastr.success('[[${successMessage}]]');
+</script>
+
+<script th:if="${errorMessage}">
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "timeOut": "5000",
+        "positionClass": "toast-bottom-right"
+    };
+    toastr.error('[[${errorMessage}]]');
+</script>
+
+
 <script th:src="@{/css/vendors/js/vendor.bundle.base.js}"></script>
 <script th:src="@{/js/off-canvas.js}"></script>
 <script th:src="@{/js/hoverable-collapse.js}"></script>

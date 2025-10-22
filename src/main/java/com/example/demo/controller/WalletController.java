@@ -10,6 +10,7 @@ import com.example.demo.service.UserWalletService;
 import com.example.demo.service.VNPayService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -130,7 +131,8 @@ public class WalletController {
 
     //return
     @GetMapping("/vnpay-payment")
-    public String handleVnpayReturn(HttpServletRequest request, Model model, Principal principal) {
+    public String handleVnpayReturn(HttpServletRequest request, Model model, Principal principal,
+                                    HttpSession ses) {
         if (principal == null) {
             model.addAttribute("message", "Vui lòng đăng nhập để hoàn tất giao dịch.");
             return "result";
@@ -153,8 +155,8 @@ public class WalletController {
                 isSuccess
         );
 
-        model.addAttribute("message", message);
-        return "result";
+        ses.setAttribute("successMessage", message);
+        return "redirect:/home";
     }
 
 }
