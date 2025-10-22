@@ -64,10 +64,4 @@ public class AdminController {
         return "redirect:/m/users";
     }
 
-    @GetMapping("topup-vnpay")
-    public String showTopupPage() {
-        return "topup-vnp";
-    }
-
-
 }
