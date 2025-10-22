@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>License</title>
-    <link rel="stylesheet" th:href="@{./css/vendors/feather/feather.css}">
-    <link rel="stylesheet" th:href="@{./css/vendors/ti-icons/css/themify-icons.css}">
-    <link rel="stylesheet" th:href="@{./css/vendors/css/vendor.bundle.base.css}">
-    <link rel="stylesheet" th:href="@{./css/vertical-layout-light/style.css}">
-    <link rel="shortcut icon" th:href="@{./css/images/favicon.png}" />
+    <link rel="stylesheet" th:href="@{/css/vendors/feather/feather.css}">
+    <link rel="stylesheet" th:href="@{/css/vendors/ti-icons/css/themify-icons.css}">
+    <link rel="stylesheet" th:href="@{/css/vendors/css/vendor.bundle.base.css}">
+    <link rel="stylesheet" th:href="@{/css/vertical-layout-light/style.css}">
+    <link rel="shortcut icon" th:href="@{/css/images/favicon.png}" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 
 
@@ -50,6 +50,8 @@
                             </span>
                         </div>
                         <form th:action="@{/search}" method="get">
+                            <input type="hidden" name="sortField" value="name" />
+                            <input type="hidden" name="sortDir" value="asc" />
                             <input type="text" name="keyword" class="form-control" id="navbar-search-input" placeholder="Tìm Kiếm sản phẩm" aria-label="search" aria-describedby="search">
                         </form>
                     </div>
@@ -204,19 +206,49 @@
                 <button class="sort-btn active">Mới Nhất</button>
                 <button class="sort-btn">Bán Chạy</button>
 
-                <div class="sort-dropdown">
-                    <select>
-                        <option selected disabled>Giá</option>
-                        <option value="asc">Giá: Thấp đến Cao</option>
-                        <option value="desc">Giá: Cao đến Thấp</option>
-                    </select>
+                <a class="sort-btn" th:href="@{/homepage/1(sortField='price', sortDir=${reverseSortDir})}">
+                    Giá
+                    <span th:text="${sortField == 'price' ? '(' + sortDir + ')' : ''}"></span>
+                </a>
+
+<!--                <div class="sort-dropdown">-->
+<!--                    <select>-->
+<!--                        <option selected disabled>Giá</option>-->
+<!--                        <option value="asc">Giá: Thấp đến Cao</option>-->
+<!--                        <option value="desc">Giá: Cao đến Thấp</option>-->
+<!--                    </select>-->
+<!--                </div>-->
+
+
+                <div class="page-control text-center">
+                    <span class="page-index" th:text="${currentPage} + ' / ' + ${totalPages}"></span>
+
+                    <!-- Nút Previous -->
+                    <a class="page-btn prev"
+                       th:if="${baseUrl == 'homepage'} and ${currentPage > 1}"
+                       th:href="@{/homepage/{pageNo}(pageNo=${currentPage - 1}, sortField=${sortField}, sortDir=${sortDir})}">
+                        &lt;
+                    </a>
+                    <a class="page-btn prev"
+                       th:if="${baseUrl == 'search'} and ${currentPage > 1}"
+                       th:href="@{/search(pageNo=${currentPage - 1}, keyword=${keyword}, sortField=${sortField}, sortDir=${sortDir})}">
+                        &lt;
+                    </a>
+
+                    <!-- Nút Next -->
+                    <a class="page-btn next"
+                       th:if="${baseUrl == 'homepage'} and ${currentPage < totalPages}"
+                       th:href="@{/homepage/{pageNo}(pageNo=${currentPage + 1}, sortField=${sortField}, sortDir=${sortDir})}">
+                        &gt;
+                    </a>
+                    <a class="page-btn next"
+                       th:if="${baseUrl == 'search'} and ${currentPage < totalPages}"
+                       th:href="@{/search(pageNo=${currentPage + 1}, keyword=${keyword}, sortField=${sortField}, sortDir=${sortDir})}">
+                        &gt;
+                    </a>
                 </div>
 
-                <div class="page-control">
-                    <span class="page-index">1/14</span>
-                    <button class="page-btn prev" disabled>&lt;</button>
-                    <button class="page-btn next">&gt;</button>
-                </div>
+
             </div>
 
             <div class="content-wrapper">
