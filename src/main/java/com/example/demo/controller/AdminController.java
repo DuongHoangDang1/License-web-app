@@ -64,6 +64,4 @@ public class AdminController {
         return "redirect:/m/users";
     }
 
-
-
 }
