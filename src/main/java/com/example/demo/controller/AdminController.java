@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.pojo.User;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,7 @@ public class AdminController {
         model.addAttribute("userForm", new User());
         return "admin";
     }
+
 
     @PostMapping("/save")
     public String saveUser(@ModelAttribute("editUser") User user,
@@ -62,6 +64,13 @@ public class AdminController {
     public String deleteUser(@PathVariable Long id) {
         userService.deleteById(id);
         return "redirect:/m/users";
+    }
+
+    @GetMapping("/topupadmin")
+    public String topupAdmin(Model model) {
+        model.addAttribute("users", userService.findAll());
+        model.addAttribute("userForm", new User());
+        return "admin-payment";
     }
 
 }
