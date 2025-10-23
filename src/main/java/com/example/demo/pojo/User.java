@@ -15,11 +15,6 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "first_name", nullable = false, length = 50)
-    private String firstName;
-
-    @Column(name = "last_name", nullable = false, length = 50)
-    private String lastName;
 
     @Column(length = 255)
     private String address;
@@ -38,9 +33,6 @@ public class User {
 
     @Column(name = "fullname", nullable = true)
     private String fullname;
-
-    @Column(name = "address", length = 255)
-    private String address;
 
     public String getFullname() {
         return fullname;
@@ -124,22 +116,4 @@ public class User {
         return id != null;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-    public String getLastName() {
-        return lastName;
-    }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-    public String getAddress() {
-        return address;
-    }
-    public void setAddress(String address) {
-        this.address = address;
-    }
 }

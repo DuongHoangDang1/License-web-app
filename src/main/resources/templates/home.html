@@ -114,21 +114,14 @@
                             <div th:text="${user.getUsername()}" style="color: #0d3057"></div>
                         </a>
 
-<<<<<<< HEAD
-                        <a class="dropdown-item" th:href="@{settings}">
-=======
+
                         <a class="dropdown-item" th:href="@{/settings}">
->>>>>>> 5ea6ed9c6b1aa51da501d16c08c7b7030e6ae30f
                             <i class="ti-settings text-primary"></i>
                             Settings
                         </a>
 
-<<<<<<< HEAD
-                        <a class="dropdown-item" th:href="@{/logout}">
-=======
 
                         <span class="dropdown-item">
->>>>>>> 5ea6ed9c6b1aa51da501d16c08c7b7030e6ae30f
                             <i class="ti-power-off text-primary"></i>
                             <form th:action="@{/logout}" method="post" style="display:inline;">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
