@@ -3,6 +3,8 @@ package com.example.demo.pojo;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Locale;
+
 @Data
 @Entity
 @Table(name = "feedback")
@@ -16,4 +18,5 @@ public class Feedback {
 
     @Column(length = 2000)
     private String message;
+
 }

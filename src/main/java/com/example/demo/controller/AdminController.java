@@ -20,9 +20,9 @@ public class AdminController {
 
     @GetMapping("/users")
     public String listUsers(Model model) {
-        model.addAttribute("users", userService.findAll());
-        model.addAttribute("userForm", new User());
-        return "admin";
+            model.addAttribute("users", userService.findAll());
+            model.addAttribute("userForm", new User());
+            return "admin";
     }
 
     @PostMapping("/save")
