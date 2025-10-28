@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách phản hồi khách hàng</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 40px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #4b4bff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .back-btn {
+            display: block;
+            margin: 25px auto 0;
+            background-color: #4b4bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #3535cc;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Danh sách phản hồi khách hàng</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Tên</th>
+            <th>Email</th>
+            <th>Nội dung</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="fb : ${feedbacks}">
+            <td th:text="${fb.name}"></td>
+            <td th:text="${fb.email}"></td>
+            <td th:text="${fb.message}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <button class="back-btn" th:onclick="'window.location.href=\'/feedback/form\''">⬅ Quay lại</button>
+</div>
+</body>
+</html>

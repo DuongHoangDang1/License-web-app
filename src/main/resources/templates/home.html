@@ -118,11 +118,10 @@
                             <div th:text="${user.getUsername()}" style="color: #0d3057"></div>
                         </a>
 
-                        <a class="dropdown-item">
+                        <a class="dropdown-item" th:href="@{/settings}">
                             <i class="ti-settings text-primary"></i>
                             Settings
                         </a>
-
                         <span class="dropdown-item">
                             <i class="ti-power-off text-primary"></i>
                             <form th:action="@{/logout}" method="post" style="display:inline;">
@@ -190,7 +189,7 @@
 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" th:href="@{/feedback/form}">
                         <i class="icon-paper menu-icon"></i>
                         <span class="menu-title">Phản hồi</span>
                     </a>

@@ -4,6 +4,7 @@ import com.example.demo.pojo.Order;
 import com.example.demo.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,12 @@ public class OrderService {
 
     public List<Order> getOrdersByUserId(Long userId) {
         return orderRepository.findByUser_IdOrderByOrderDateDesc(userId);
+    }
+
+    public List<Order> getOrdersByYear(int year) {
+        LocalDateTime start = LocalDateTime.of(year, 1, 1, 0, 0);
+        LocalDateTime end = LocalDateTime.of(year, 12, 31, 23, 59);
+        return orderRepository.findByOrderDateBetween(start, end);
     }
 
 }

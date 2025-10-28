@@ -2,6 +2,7 @@ package com.example.demo.pojo;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -73,5 +74,9 @@ public class Order {
 
     public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public LocalDate getCreatedAt() {
+        return orderDate.toLocalDate();
     }
 }

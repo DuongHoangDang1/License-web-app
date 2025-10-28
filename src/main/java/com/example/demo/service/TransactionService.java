@@ -6,7 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionService {
@@ -42,6 +45,36 @@ public class TransactionService {
             transaction.setStatus(DepositTransaction.Status.FAILED);
             transactionRepository.save(transaction);
             return "Giao dịch thất bại hoặc không hợp lệ!";
+        }
+
+
+    }
+    public List<Map<String, Object>> getRecentTransactionsWithUsernames() {
+        return transactionRepository.findRecentTransactionsWithUsername();
+    }
+
+
+    public List<TopDepositor> getTopDepositors() {
+        return transactionRepository.findTop3Depositors().stream()
+                .map(obj -> new TopDepositor((String) obj[0], ((Number) obj[1]).doubleValue()))
+                .collect(Collectors.toList());
+    }
+
+    public static class TopDepositor {
+        private String username;
+        private double total;
+
+        public TopDepositor(String username, double total) {
+            this.username = username;
+            this.total = total;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public double getTotal() {
+            return total;
         }
     }
 }
