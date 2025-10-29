@@ -21,7 +21,9 @@ public class MyUserDetails implements UserDetailsService {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             var userObj = user.get();
-            return org.springframework.security.core.userdetails.User.builder()
+            if(!userObj.isVerified()){
+                throw new UsernameNotFoundException("Username not active!");
+            }            return org.springframework.security.core.userdetails.User.builder()
                     .username(userObj.getUsername())
                     .password(userObj.getPassword())
                     .roles("USER")

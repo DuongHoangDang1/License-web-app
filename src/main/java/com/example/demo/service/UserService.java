@@ -52,6 +52,8 @@ public class UserService {
     @Transactional
     public void deleteById(Long id) {
         userWalletRepository.deleteByUserId(id);
-        userRepository.deleteById(id);    }
+        userRepository.deleteById(id);
+    }
+
 
 }

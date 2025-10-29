@@ -37,6 +37,12 @@
             border: 1px solid #ccc;
         }
 
+        input[readonly] {
+            background-color: #f0f0f0;
+            color: #555;
+            cursor: not-allowed;
+        }
+
         button {
             background-color: #4b4bff;
             color: white;
@@ -49,21 +55,30 @@
         button:hover {
             background-color: #3737e6;
         }
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-link {
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>Gửi phản hồi của bạn</h1>
     <form th:action="@{/feedback/submit}" th:object="${feedback}" method="post">
-        <input type="text" th:field="*{name}" placeholder="Tên của bạn" required>
-        <input type="email" th:field="*{email}" placeholder="Email" required>
+        <!-- Các trường tên và email tự động hiển thị, không chỉnh sửa được -->
+        <input type="text" th:field="*{name}" placeholder="Username" readonly>
+        <input type="email" th:field="*{email}" placeholder="Email" readonly>
+
+        <!-- Chỉ cho phép nhập nội dung phản hồi -->
         <textarea th:field="*{message}" placeholder="Nội dung phản hồi" rows="5" required></textarea>
+
         <div class="button-row">
             <button type="submit">Gửi phản hồi</button>
-
-            <a th:href="@{/feedback/list}" class="btn-link">
-                <button type="button">Xem phản hồi</button>
-            </a>
 
             <a th:href="@{/home}" class="btn-link">
                 <button type="button">Trở về</button>

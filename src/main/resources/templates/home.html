@@ -109,7 +109,7 @@
                              style="display:inline-flex;align-items:center;background-color:#ffffff;color:#F57F17;font-weight:600;border-radius:20px;padding:0px;font-size:15px;">
                             <i class="ti-money"
                                style="font-size:15px;margin-right:3px;color:#ff9800; position: relative; top: 2px; left: 49px;"></i>
-                            <span style="position: relative; top: 3px; left: 50px;"><span th:text="${#numbers.formatDecimal(wallet.getBalance(), 0, 'COMMA', 0, 'POINT')} + ' ₫'"></span></span>
+                            <span style="position: relative; top: 3px; left: 50px;"><span th:text="${wallet != null ? #numbers.formatDecimal(wallet.getBalance(), 0, 'COMMA', 0, 'POINT') : 0} + ' ₫'"></span></span>
                         </div>
 
 

@@ -83,4 +83,22 @@ public class AdminController {
         model.addAttribute("userForm", new User());
         return "seller-list";
     }
+
+    @PostMapping("/disable/{id}")
+    public String disableUser(@PathVariable Long id) {
+        User user = userService.findUserById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy người dùng có ID: " + id));
+        user.setVerified(false);
+        userService.saveUser(user);
+        return "redirect:/m/users";
+    }
+
+    @PostMapping("/enable/{id}")
+    public String enableUser(@PathVariable Long id) {
+        User user = userService.findUserById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy người dùng có ID: " + id));
+        user.setVerified(true);
+        userService.saveUser(user);
+        return "redirect:/m/users";
+    }
 }

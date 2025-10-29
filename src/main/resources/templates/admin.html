@@ -23,7 +23,6 @@
             height: 100vh;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 240px;
             background: var(--primary);
@@ -106,41 +105,57 @@
 
         tr:hover { background: #f3f3ff; }
 
-        .form-container {
-            background: white;
-            padding: 20px;
-            margin-top: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+        .status {
+            font-weight: 600;
+            text-align: center;
+            border-radius: 20px;
+            padding: 6px 10px;
+            display: inline-block;
+            min-width: 120px;
         }
 
-        .form-container input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
+        .status.active {
+            color: #2e7d32;
+            background: #c8e6c9;
+        }
+
+        .status.inactive {
+            color: #b71c1c;
+            background: #ffcdd2;
+        }
+        th.col-actions,
+        td.actions {
+            text-align: center;
+            width: 240px;
+        }
+
+        .actions .action-group {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .actions form {
-            display: inline;
+            margin: 0;
         }
 
-        .delete-btn { background: #f44336; }
-        .delete-btn:hover { background: #e53935; }
+        .disable-btn { background: #f44336; }
+        .disable-btn:hover { background: #e53935; }
 
-        .edit-btn { background: #4caf50; }
-        .edit-btn:hover { background: #43a047; }
+        .enable-btn { background: #4caf50; }
+        .enable-btn:hover { background: #43a047; }
     </style>
 </head>
 
 <body>
 <div class="sidebar">
     <h2><i class="fa-solid fa-user-gear"></i> Admin</h2>
-    <a href class="active"><i class="fa-solid fa-users"></i> Quản lý tài khoản</a>
+    <a href="#" class="active"><i class="fa-solid fa-users"></i> Quản lý tài khoản</a>
     <a th:href="@{/m/topupadmin}"><i class="fa-solid fa-wallet"></i> Nạp tiền</a>
     <a th:href="@{/feedback/list2}"><i class="fa-solid fa-comments"></i> Phản hồi khách hàng</a>
-    <a th:href="@{/m/viewsellers}"><i class="fa-solid fa-users"></i> Danh sách Seller</a>
+    <a th:href="@{/m/viewsellers}"><i class="fa-solid fa-store"></i> Danh sách Seller</a>
     <a th:href="@{/home}"><i class="fa-solid fa-arrow-left"></i> Về trang chủ</a>
 </div>
 
@@ -149,6 +164,7 @@
         <h1>👋 Xin chào, Admin</h1>
         <span>Trang quản lý tài khoản</span>
     </div>
+
     <section>
         <h2>Danh sách tài khoản</h2>
         <table>
@@ -157,7 +173,8 @@
                 <th>Tên đăng nhập</th>
                 <th>Email</th>
                 <th>Vai trò</th>
-                <th>Thao tác</th>
+                <th>Trạng thái</th>
+                <th class="col-actions">Thao tác</th>
             </tr>
             </thead>
             <tbody>
@@ -165,14 +182,28 @@
                 <td th:text="${user.username}">username</td>
                 <td th:text="${user.email}">email</td>
                 <td th:text="${user.role}">role</td>
+
+                <td>
+                    <span th:classappend="${user.verified} ? 'status active' : 'status inactive'"
+                          th:text="${user.verified} ? 'Hoạt động' : 'Đã vô hiệu hóa'">
+                        Hoạt động
+                    </span>
+                </td>
+
                 <td class="actions">
-                    <form th:action="@{'/m/edit/' + ${user.id}}" method="get">
-                        <button type="submit" class="btn edit-btn">Sửa</button>
-                    </form>
-                    <form th:action="@{'/m/delete/' + ${user.id}}" method="post"
-                          onsubmit="return confirm('Bạn có chắc muốn xóa tài khoản này?');">
-                        <button type="submit" class="btn delete-btn">Xóa</button>
-                    </form>
+                    <div class="action-group">
+                        <form th:if="${user.verified}"
+                              th:action="@{'/m/disable/' + ${user.id}}" method="post"
+                              onsubmit="return confirm('Bạn có chắc muốn vô hiệu hóa tài khoản này?');">
+                            <button type="submit" class="btn disable-btn">Vô hiệu hóa</button>
+                        </form>
+
+                        <form th:if="${!user.verified}"
+                              th:action="@{'/m/enable/' + ${user.id}}" method="post"
+                              onsubmit="return confirm('Bạn có chắc muốn kích hoạt lại tài khoản này?');">
+                            <button type="submit" class="btn enable-btn">Kích hoạt lại</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             </tbody>
