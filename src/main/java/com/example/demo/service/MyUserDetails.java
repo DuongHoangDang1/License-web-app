@@ -33,7 +33,4 @@ public class MyUserDetails implements UserDetailsService {
         }
     }
 
-    public User getUserByUsername(String username){
-        return userRepository.findByUsername(username).orElse(null);
-    }
 }

@@ -6,6 +6,7 @@ import com.example.demo.pojo.Product;
 import com.example.demo.pojo.User;
 import com.example.demo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -109,11 +110,12 @@ public class SellerController {
 
 
     @GetMapping("/register")
-    public String showSellerRegisterForm(@AuthenticationPrincipal MyUserDetails userDetails, Model model) {
-        Optional<User> currentUserOpt = userService.findByUsername(userDetails.getUsername());
+    public String showSellerRegisterForm(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        String username = userDetails.getUsername();
+        Optional<User> currentUserOpt = userService.findByUsername(username);
         if (currentUserOpt.isEmpty()) {
             model.addAttribute("error", "Không tìm thấy tài khoản người dùng!");
-            return "error";
+            return "seller-register";
         }
 
         model.addAttribute("user", currentUserOpt.get());
@@ -123,31 +125,25 @@ public class SellerController {
     @Autowired
     private UserService userService;
 
-    // Xử lý form
     @PostMapping("/register")
-    public String registerSeller(@AuthenticationPrincipal MyUserDetails userDetails,
-                                 @RequestParam("sellerDescription") String description,
-                                 @RequestParam("sellerPhone") String phone,
+    public String registerSeller(@AuthenticationPrincipal UserDetails userDetails,
+                                 @RequestParam String sellerDescription,
+                                 @RequestParam String sellerPhone,
                                  Model model) {
 
-        Optional<User> userOpt = userService.findByUsername(userDetails.getUsername());
+        String username = userDetails.getUsername();
+        Optional<User> userOpt = userService.findByUsername(username);
+
         if (userOpt.isEmpty()) {
             model.addAttribute("error", "Không tìm thấy tài khoản người dùng!");
             return "seller-register";
         }
 
         User user = userOpt.get();
-
-        if (user.isSeller()) {
-            model.addAttribute("error", "Bạn đã là Seller rồi!");
-            model.addAttribute("user", user);
-            return "seller-register";
-        }
-
-        user.setSellerDescription(description);
-        user.setSellerPhone(phone);
+        user.setSellerDescription(sellerDescription);
+        user.setSellerPhone(sellerPhone);
         user.setSeller(true);
-        UserService.save(user);
+        userService.save(user);
 
         model.addAttribute("success", "Nâng cấp tài khoản thành Seller thành công!");
         model.addAttribute("user", user);

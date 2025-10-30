@@ -39,8 +39,8 @@ public class User {
     @Column(name = "seller_phone", length = 20)
     private String sellerPhone;
 
-    @Column(name = "is_seller")
-    private boolean isSeller = false;
+    @Column(nullable = false)
+    private Boolean isSeller = false;
 
 
     public String getFullname() {
