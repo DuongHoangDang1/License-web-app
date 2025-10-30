@@ -4,14 +4,12 @@ import com.example.demo.pojo.Feedback;
 import com.example.demo.pojo.Order;
 import com.example.demo.pojo.Product;
 import com.example.demo.pojo.User;
-import com.example.demo.service.FeedbackService;
-import com.example.demo.service.OrderService;
-import com.example.demo.service.ProductService;
+import com.example.demo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -32,11 +30,8 @@ public class SellerController {
 
     @GetMapping("/home")
     public String sellerHome(Model model) {
-        //Giả sử bạn có danh sách sản phẩm
         List<Product> products = productService.findAll();
         model.addAttribute("products", products);
-
-        // Giả lập user (sau này sẽ lấy từ session / authentication)
         User user = new User();
         user.setId(1);
         user.setUsername("demo_seller");
@@ -47,16 +42,10 @@ public class SellerController {
     @GetMapping("/revenue")
     public String revenue(Model model) {
         model.addAttribute("pageTitle", "Doanh thu tháng này");
-
-        // Lấy tháng và năm hiện tại
         LocalDate currentDate = LocalDate.now();
         int currentMonth = currentDate.getMonthValue();
         int currentYear = currentDate.getYear();
-
-        // Lấy danh sách đơn hàng trong năm hiện tại
         List<Order> orders = orderService.getOrdersByYear(currentYear);
-
-        //  Tính tổng doanh thu theo tháng
         Map<Integer, Double> monthlyRevenue = new HashMap<>();
         for (int i = 1; i <= 12; i++) {
             monthlyRevenue.put(i, 0.0);
@@ -70,19 +59,16 @@ public class SellerController {
             }
         }
 
-        // Lấy doanh thu và số đơn trong tháng hiện tại
         double totalRevenueThisMonth = monthlyRevenue.getOrDefault(currentMonth, 0.0);
         long orderCountThisMonth = orders.stream()
                 .filter(o -> o.getCreatedAt() != null && o.getCreatedAt().getMonthValue() == currentMonth)
                 .count();
 
-        //Chuyển danh sách doanh thu ra mảng để Chart.js hiển thị
         List<Double> revenueData = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
             revenueData.add(monthlyRevenue.get(i));
         }
 
-        // Truyền dữ liệu ra view
         model.addAttribute("revenue", totalRevenueThisMonth);
         model.addAttribute("orderCount", orderCountThisMonth);
         model.addAttribute("revenueData", revenueData);
@@ -92,7 +78,6 @@ public class SellerController {
     }
     @GetMapping("/feedback/list")
     public String feedback(Model model) {
-        // Gọi qua đối tượng feedbackService, không phải class
         List<Feedback> feedbackList = feedbackService.getAllFeedback();
 
 
@@ -109,18 +94,65 @@ public class SellerController {
 
         long totalCount = feedbackList.size();
         long negativeCount = totalCount - positiveCount;
-
-        // Gửi dữ liệu ra template
         model.addAttribute("pageTitle", "Phản hồi khách hàng");
         model.addAttribute("feedbacks", feedbackList);
         model.addAttribute("positiveCount", positiveCount);
         model.addAttribute("negativeCount", negativeCount);
         model.addAttribute("totalFeedback", totalCount);
-        return "feedback3"; // Tên file feedback2.html
+        return "feedback3";
     }
     @GetMapping("/customers")
     public String customers(Model model) {
         model.addAttribute("pageTitle", "Khách hàng tiềm năng");
         return "seller-customer";
     }
+
+
+    @GetMapping("/register")
+    public String showSellerRegisterForm(@AuthenticationPrincipal MyUserDetails userDetails, Model model) {
+        Optional<User> currentUserOpt = userService.findByUsername(userDetails.getUsername());
+        if (currentUserOpt.isEmpty()) {
+            model.addAttribute("error", "Không tìm thấy tài khoản người dùng!");
+            return "error";
+        }
+
+        model.addAttribute("user", currentUserOpt.get());
+        return "seller-register";
+    }
+
+    @Autowired
+    private UserService userService;
+
+    // Xử lý form
+    @PostMapping("/register")
+    public String registerSeller(@AuthenticationPrincipal MyUserDetails userDetails,
+                                 @RequestParam("sellerDescription") String description,
+                                 @RequestParam("sellerPhone") String phone,
+                                 Model model) {
+
+        Optional<User> userOpt = userService.findByUsername(userDetails.getUsername());
+        if (userOpt.isEmpty()) {
+            model.addAttribute("error", "Không tìm thấy tài khoản người dùng!");
+            return "seller-register";
+        }
+
+        User user = userOpt.get();
+
+        if (user.isSeller()) {
+            model.addAttribute("error", "Bạn đã là Seller rồi!");
+            model.addAttribute("user", user);
+            return "seller-register";
+        }
+
+        user.setSellerDescription(description);
+        user.setSellerPhone(phone);
+        user.setSeller(true);
+        UserService.save(user);
+
+        model.addAttribute("success", "Nâng cấp tài khoản thành Seller thành công!");
+        model.addAttribute("user", user);
+        return "seller-register";
+    }
+
+
 }

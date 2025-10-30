@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng ký Seller</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4b49ac;
+            --primary-hover: rgb(75 73 172 / 85%);
+            --bg-light: #f4f5fc;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--bg-light);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .register-container {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 420px;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        textarea, input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: none;
+            height: 80px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+        }
+
+        .message {
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .success { color: #16a34a; }
+        .error { color: #dc2626; }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-container">
+    <h2>🌟 Nâng cấp tài khoản Seller</h2>
+
+    <div th:if="${success}" class="message success" th:text="${success}"></div>
+    <div th:if="${error}" class="message error" th:text="${error}"></div>
+
+    <form th:action="@{/seller/upgrade}" method="post">
+        <p style="text-align:center; color:#555;">
+            Xin chào, <strong th:text="${user.username}">username</strong>!<br>
+            Hãy thêm thông tin để trở thành Seller nhé 👇
+        </p>
+
+        <label for="description">Mô tả bản thân:</label>
+        <textarea id="description" name="description" placeholder="Giới thiệu ngắn gọn..."></textarea>
+
+        <label for="phone">Số điện thoại liên hệ:</label>
+        <input id="phone" name="phone" type="text" placeholder="Nhập số điện thoại..." required>
+
+        <button type="submit"><i class="fa-solid fa-arrow-up"></i> Nâng cấp lên Seller</button>
+    </form>
+
+    <a th:href="@{/home}" class="back-link">⬅ Quay lại trang chủ</a>
+</div>
+
+</body>
+</html>

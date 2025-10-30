@@ -38,9 +38,6 @@ public class UserService {
     public void save(User user) {
         userRepository.save(user);
     }
-//    public User updateUser(Long id, User user) {
-//        return userRepository.save(user);
-//    }
 
     public Object findAll() {
         return userRepository.findAll();

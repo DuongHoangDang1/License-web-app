@@ -13,8 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Optional;
+
 
 @Controller
 @RequestMapping("/feedback")
@@ -26,18 +26,16 @@ public class FeedbackController {
     @Autowired
     public FeedbackController(FeedbackService feedbackService, UserService userService) {
         this.feedbackService = feedbackService;
-        this.UserService = userService; // <-- gán vào biến instance
+        this.UserService = userService;
     }
     @GetMapping("/form")
     public String feedbackForm(Model model, @AuthenticationPrincipal UserDetails user) {
         Feedback feedback = new Feedback();
-        // Tìm thông tin người dùng hiện tại theo username
         Optional<User> currentUser = UserService.findByUsername(user.getUsername());
         if (currentUser.isPresent()) {
             feedback.setName(currentUser.get().getUsername() != null ? currentUser.get().getUsername() : currentUser.get().getUsername());
             feedback.setEmail(currentUser.get().getEmail());
         } else {
-            // fallback an toàn nếu user chưa có trong DB
             feedback.setName(user.getUsername());
             feedback.setEmail("unknown@example.com");
         }
@@ -100,7 +98,7 @@ public class FeedbackController {
         Optional<Feedback> feedbackOpt = feedbackService.getFeedbackById(id);
         if (feedbackOpt.isPresent()) {
             model.addAttribute("feedback", feedbackOpt.get());
-            return "adminreply"; // Tên file adminreply.html
+            return "adminreply";
         } else {
             return "redirect:/feedback/list2";
         }
@@ -112,8 +110,6 @@ public class FeedbackController {
     @Value("${spring.mail.username}")
     private String fromEmail;
 
-
-    // Gửi phản hồi qua email
     @PostMapping("/sendReply")
     public String sendReply(@RequestParam("toEmail") String toEmail,
                             @RequestParam("replyMessage") String replyMessage,
@@ -123,15 +119,12 @@ public class FeedbackController {
             message.setTo(toEmail);
             message.setSubject("Phản hồi từ Admin");
             message.setText(replyMessage);
-            message.setFrom(fromEmail); // Được inject từ application.properties
+            message.setFrom(fromEmail);
             mailSender.send(message);
-
             model.addAttribute("success", "Phản hồi đã được gửi đến " + toEmail);
         } catch (Exception e) {
             model.addAttribute("error", "Không thể gửi phản hồi: " + e.getMessage());
         }
         return "redirect:/feedback/list2";
     }
-
-
 }
