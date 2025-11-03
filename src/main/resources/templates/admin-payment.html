@@ -132,8 +132,7 @@
     <a th:href="@{/m/users}"><i class="fa-solid fa-users"></i> Quản lý tài khoản</a>
     <a href="#" class="active"><i class="fa-solid fa-wallet"></i> Nạp tiền</a>
     <a href="/feedback/list2"><i class="fa-solid fa-comments"></i> Phản hồi khách hàng</a>
-    <a href="/m/viewsellers"><i class="fa-solid fa-store"></i> Danh sách Seller</a>
-    <a href="/home"><i class="fa-solid fa-arrow-left"></i> Về trang chủ</a>
+    <a th:href="@{/m/pending}"><i class="fa-solid fa-store"></i> Yêu cầu Seller</a>
 </div>
 
 <!-- Main content -->
@@ -145,7 +144,7 @@
     <!-- Form nạp tiền -->
     <div class="card">
         <h2>Tìm kiếm tài khoản & nạp tiền</h2>
-        <form th:action="@{/admin/topup}" method="post" style="display:flex; align-items:center; flex-wrap:wrap;">
+        <form th:action="@{/m/topupadmin}" method="post" style="display:flex; align-items:center; flex-wrap:wrap;">
             <input type="text" name="username" placeholder="Nhập tên đăng nhập..." required>
             <input type="number" name="amount" placeholder="Số tiền nạp..." min="1000" required>
             <button type="submit"><i class="fa-solid fa-plus"></i> Nạp tiền</button>

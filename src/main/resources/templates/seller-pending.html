@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Trang dành cho Seller</title>
+    <title>Yêu cầu nâng cấp Seller</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
@@ -23,7 +23,6 @@
             height: 100vh;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 240px;
             background: var(--primary);
@@ -81,15 +80,10 @@
             border: none;
             border-radius: 6px;
             cursor: pointer;
+            font-weight: 500;
         }
 
         .btn:hover { background: var(--primary-hover); }
-
-        .btn-add {
-            background: #4CAF50;
-            margin-bottom: 15px;
-        }
-        .btn-add:hover { background: #43A047; }
 
         table {
             width: 100%;
@@ -112,73 +106,100 @@
 
         tr:hover { background: #f3f3ff; }
 
-        .product-img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 8px;
+        .status {
+            font-weight: 600;
+            text-align: center;
+            border-radius: 20px;
+            padding: 6px 10px;
+            display: inline-block;
+            min-width: 120px;
+        }
+
+        .status.pending {
+            color: #b45309;
+            background: #fef3c7;
+        }
+
+        .status.approved {
+            color: #2e7d32;
+            background: #c8e6c9;
+        }
+
+        .status.rejected {
+            color: #b71c1c;
+            background: #ffcdd2;
+        }
+
+        th.col-actions,
+        td.actions {
+            text-align: center;
+            width: 240px;
+        }
+
+        .actions .action-group {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .actions form {
-            display: inline;
-            margin-right: 6px;
+            margin: 0;
         }
 
-        .edit-btn { background: #2196F3; }
-        .edit-btn:hover { background: #1976D2; }
+        .approve-btn { background: #4caf50; }
+        .approve-btn:hover { background: #43a047; }
 
-        .delete-btn { background: #f44336; }
-        .delete-btn:hover { background: #e53935; }
-
-        td.price {
-            color: #333;
-            font-weight: 600;
-        }
+        .reject-btn { background: #f44336; }
+        .reject-btn:hover { background: #e53935; }
     </style>
 </head>
 
 <body>
+<!-- Sidebar giữ nguyên -->
 <div class="sidebar">
-    <h2><i class="fa-solid fa-user-gear"></i> Seller</h2>
-    <a href="#" class="active"><i class="fa-brands fa-product-hunt"></i> Quản lý sản phẩm</a>
-    <a th:href="@{/sellers/revenue}"><i class="fa-solid fa-chart-simple"></i> Doanh thu</a>
-    <a th:href="@{/sellers/feedback/list}"><i class="fa-solid fa-comments"></i> Phản hồi khách hàng</a>
-    <a th:href="@{/sellers/customers}"><i class="fa-solid fa-users"></i> Khách hàng tiềm năng</a>
+    <h2><i class="fa-solid fa-user-gear"></i> Admin</h2>
+    <a th:href="@{/m/users}"><i class="fa-solid fa-users"></i> Quản lý tài khoản</a>
+    <a th:href="@{/m/topupadmin}"><i class="fa-solid fa-wallet"></i> Nạp tiền</a>
+    <a th:href="@{/feedback/list2}"><i class="fa-solid fa-comments"></i> Phản hồi khách hàng</a>
+    <a href="#" class="active"><i class="fa-solid fa-hourglass-half"></i> Yêu cầu Seller</a>
 </div>
 
+<!-- Main content -->
 <div class="main-content">
     <div class="header">
-        <h1>👋 Trang dành cho Seller</h1>
+        <h1>📋 Yêu cầu nâng cấp Seller</h1>
+        <span>Trang quản lý yêu cầu đang chờ phê duyệt</span>
     </div>
-    <section>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h2>Danh sách sản phẩm</h2>
-            <a th:href="@{/sellers/add}" class="btn btn-add"><i class="fa-solid fa-plus"></i> Thêm sản phẩm</a>
-        </div>
 
+    <section>
+        <h2>Danh sách yêu cầu nâng cấp</h2>
         <table>
             <thead>
             <tr>
-                <th>Hình ảnh</th>
-                <th>Tên sản phẩm</th>
-                <th>Giá tiền</th>
-                <th>Thao tác</th>
+                <th>Tên đăng nhập</th>
+                <th>Họ và tên</th>
+                <th>Email</th>
+                <th class="col-actions">Thao tác</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="product : ${products}">
-                <td>
-                    <img th:src="@{${product.imageUrl}}" alt="Ảnh sản phẩm" class="product-img">
-                </td>
-                <td th:text="${product.name}">Tên sản phẩm</td>
-                <td class="price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' ₫'">0 ₫</td>
+            <tr th:each="user : ${pendingRequests}">
+                <td th:text="${user.username}">username</td>
+                <td th:text="${user.fullname}">fullname</td>
+                <td th:text="${user.email}">email@example.com</td>
                 <td class="actions">
-                    <form th:action="@{'/sellers/edit/' + ${product.id}}" method="get">
-                        <button type="submit" class="btn edit-btn"><i class="fa-solid fa-pen-to-square"></i> Sửa</button>
-                    </form>
-                    <form th:action="@{'/sellers/delete/' + ${product.id}}" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">
-                        <button type="submit" class="btn delete-btn"><i class="fa-solid fa-trash"></i> Xóa</button>
-                    </form>
+                    <div class="action-group">
+                        <form th:action="@{'/m/approve/' + ${user.id}}" method="post"
+                              onsubmit="return confirm('Xác nhận DUYỆT yêu cầu này?');">
+                            <button type="submit" class="btn approve-btn"><i class="fa-solid fa-check"></i> Duyệt</button>
+                        </form>
+
+                        <form th:action="@{'/m/reject/' + ${user.id}}" method="post"
+                              onsubmit="return confirm('Bạn có chắc muốn TỪ CHỐI yêu cầu này?');">
+                            <button type="submit" class="btn reject-btn"><i class="fa-solid fa-xmark"></i> Từ chối</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             </tbody>

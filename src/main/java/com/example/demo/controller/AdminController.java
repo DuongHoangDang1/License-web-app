@@ -9,6 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.List;
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/m")
 public class AdminController {
@@ -77,6 +81,30 @@ public class AdminController {
         return "admin-payment";
     }
 
+    @PostMapping("/topupadmin")
+    public String topupAdminAction(@RequestParam("username") String username,
+                                   @RequestParam("amount") Double amount,
+                                   Model model) {
+        try {
+            User user = userService.findByUsername(username)
+                    .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy người dùng: " + username));
+
+            transactionService.topupForAdmin(user.getId(), amount);
+
+            model.addAttribute("successMessage", "Đã nạp " + amount + "₫ cho " + username);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "Lỗi khi nạp tiền: " + e.getMessage());
+        }
+
+        model.addAttribute("users", userService.findAll());
+        model.addAttribute("recentTransactions", transactionService.getRecentTransactionsWithUsernames());
+        model.addAttribute("topUsers", transactionService.getTopDepositors());
+        return "admin-payment";
+    }
+
+
+
+
     @GetMapping("/viewsellers")
     public String viewSellers(Model model) {
         model.addAttribute("users", userService.findAll());
@@ -101,4 +129,88 @@ public class AdminController {
         userService.saveUser(user);
         return "redirect:/m/users";
     }
+
+    @GetMapping("/upgrade")
+    public String showUpgradeForm(Model model, Principal principal) {
+        Optional<User> optionalUser = userService.findByUsername(principal.getName());
+        if (optionalUser.isPresent()) {
+            model.addAttribute("user", optionalUser.get());
+        }
+        return "seller-register";
+    }
+
+    @PostMapping("/upgrade")
+    public String upgradeSeller(Model model, Principal principal) {
+        Optional<User> optionalUser = userService.findByUsername(principal.getName());
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (!"SELLER".equals(user.getRole())) {
+                userService.save(user);
+                model.addAttribute("pending", "Yêu cầu của bạn đang chờ phê duyệt từ quản trị viên.");
+            }
+            model.addAttribute("user", user);
+        } else {
+            model.addAttribute("error", "Không tìm thấy tài khoản người dùng.");
+        }
+        return "seller-register";
+    }
+
+
+    @GetMapping("/pending")
+    public String viewPending(Model model) {
+        List<User> pendingUsers = userService.findPendingSellers();
+        model.addAttribute("pendingRequests", pendingUsers);
+        return "seller-pending";
+    }
+
+
+    @PostMapping("/pending")
+    public String requestUpgrade(Model model, Principal principal) {
+        Optional<User> optionalUser = userService.findByUsername(principal.getName());
+
+        if (optionalUser.isEmpty()) {
+            model.addAttribute("error", "Không tìm thấy người dùng!");
+            return "seller-register";
+        }
+
+        User user = optionalUser.get();
+
+        if ("SELLER".equals(user.getRole())) {
+            model.addAttribute("success", "Bạn đã là Seller rồi!");
+        }
+        else if ("SELLER_PENDING".equals(user.getRole())) {
+            model.addAttribute("pending", "Yêu cầu của bạn đang chờ phê duyệt.");
+        }
+        else if ("USER".equals(user.getRole())) {
+            user.setRole("SELLER_PENDING");
+            userService.save(user);
+            model.addAttribute("pending", "Yêu cầu nâng cấp đã được gửi.");
+        }
+
+        model.addAttribute("user", user);
+        return "seller-register";
+    }
+
+    @PostMapping("/approve/{id}")
+    public String approveSeller(@PathVariable Long id) {
+        Optional<User> optionalUser = userService.findUserById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setRole("SELLER");
+            userService.saveUser(user);
+        }
+        return "redirect:/m/pending";
+    }
+
+    @PostMapping("/reject/{id}")
+    public String rejectSeller(@PathVariable Long id) {
+        Optional<User> optionalUser = userService.findUserById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setRole("USER");
+            userService.saveUser(user);
+        }
+        return "redirect:/m/pending";
+    }
+
 }

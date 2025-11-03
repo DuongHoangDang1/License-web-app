@@ -28,7 +28,7 @@
             padding: 30px 40px;
             border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 420px;
+            width: 440px;
         }
 
         h2 {
@@ -37,24 +37,9 @@
             margin-bottom: 25px;
         }
 
-        label {
-            display: block;
-            font-weight: 500;
-            margin-bottom: 6px;
-        }
-
-        textarea, input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
-
-        textarea {
-            resize: none;
-            height: 80px;
+        p {
+            text-align: center;
+            color: #555;
         }
 
         button {
@@ -81,6 +66,7 @@
 
         .success { color: #16a34a; }
         .error { color: #dc2626; }
+        .pending { color: #f59e0b; }
 
         .back-link {
             display: block;
@@ -93,6 +79,28 @@
         .back-link:hover {
             text-decoration: underline;
         }
+
+        .info-box {
+            background: var(--bg-light);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .info-item span {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .password-mask {
+            font-family: monospace;
+            color: #666;
+        }
     </style>
 </head>
 <body>
@@ -102,21 +110,30 @@
 
     <div th:if="${success}" class="message success" th:text="${success}"></div>
     <div th:if="${error}" class="message error" th:text="${error}"></div>
+    <div th:if="${pending}" class="message pending" th:text="${pending}"></div>
 
-    <form th:action="@{/seller/upgrade}" method="post">
-        <p style="text-align:center; color:#555;">
-            Xin chào, <strong th:text="${user.username}">username</strong>!<br>
-            Hãy thêm thông tin để trở thành Seller nhé 👇
-        </p>
+    <form th:action="@{/m/upgrade}" method="post"
+          th:if="${pending == null}">
+    <p>Xin chào, <strong th:text="${user.username}">username</strong>!<br>
+            Dưới đây là thông tin tài khoản của bạn:</p>
 
-        <label for="description">Mô tả bản thân:</label>
-        <textarea id="description" name="description" placeholder="Giới thiệu ngắn gọn..."></textarea>
+        <div class="info-box">
+            <div class="info-item">👤 Tên người dùng: <span th:text="${user.username}">username</span></div>
+            <div class="info-item">📛 Họ và tên: <span th:text="${user.fullname}">fullname</span></div>
+            <div class="info-item">📧 Email: <span th:text="${user.email}">email@example.com</span></div>
+            <div class="info-item">🎭 Quyền hiện tại: <span th:text="${user.role}">USER</span></div>
+        </div>
 
-        <label for="phone">Số điện thoại liên hệ:</label>
-        <input id="phone" name="phone" type="text" placeholder="Nhập số điện thoại..." required>
-
-        <button type="submit"><i class="fa-solid fa-arrow-up"></i> Nâng cấp lên Seller</button>
+        <button type="submit"><i class="fa-solid fa-arrow-up"></i> Xác nhận nâng cấp Seller</button>
     </form>
+
+    <div th:if="${pending != null}">
+        <p style="text-align:center; font-size:15px; color:#f59e0b;"
+           th:text="${pending}">
+            🕒 Yêu cầu của bạn đang được xử lý. Vui lòng chờ quản trị viên phê duyệt.
+        </p>
+    </div>
+
 
     <a th:href="@{/home}" class="back-link">⬅ Quay lại trang chủ</a>
 </div>

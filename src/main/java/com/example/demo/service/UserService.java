@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,6 +51,15 @@ public class UserService {
     public void deleteById(Long id) {
         userWalletRepository.deleteByUserId(id);
         userRepository.deleteById(id);
+    }
+
+    public List<User> findPendingSellers() {
+        return userRepository.findByRole("SELLER_PENDING");
+    }
+
+
+    public void updateUser(User user) {
+        userRepository.save(user);
     }
 
 

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chỉnh sửa sản phẩm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4b49ac;
+            --primary-hover: rgb(75 73 172 / 85%);
+            --bg-light: #f4f5fc;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--bg-light);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding-top: 20px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            display: block;
+            border-radius: 8px;
+            margin: 4px 12px;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: var(--primary-hover);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .form-container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"], input[type="number"], textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn:hover { background: var(--primary-hover); }
+
+        .preview-container {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .preview-container img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .or-divider {
+            text-align: center;
+            margin: 8px 0;
+            color: #888;
+            font-style: italic;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+<div class="sidebar">
+    <h2><i class="fa-solid fa-user-gear"></i> Seller</h2>
+    <a th:href="@{/ellers/home}"><i class="fa-brands fa-product-hunt"></i> Quản lý sản phẩm</a>
+    <a th:href="@{/sellers/revenue}"><i class="fa-solid fa-chart-simple"></i> Doanh thu</a>
+    <a th:href="@{/sellers/feedback/list}"><i class="fa-solid fa-comments"></i> Phản hồi khách hàng</a>
+    <a th:href="@{/sellers/customers}"><i class="fa-solid fa-users"></i> Khách hàng tiềm năng</a>
+    <a th:href="@{/home}"><i class="fa-solid fa-arrow-left"></i> Về trang chủ</a>
+</div>
+
+<div class="main-content">
+    <div class="header">
+        <h1>✏️ Chỉnh sửa sản phẩm</h1>
+    </div>
+
+    <div class="form-container">
+        <form th:action="@{'/sellers/edit/' + ${product.id}}" method="post" th:object="${product}" enctype="multipart/form-data">
+            <label for="name">Tên sản phẩm</label>
+            <input type="text" id="name" th:field="*{name}" placeholder="Nhập tên sản phẩm" required>
+
+            <label for="description">Mô tả</label>
+            <textarea id="description" th:field="*{description}" rows="4" placeholder="Nhập mô tả sản phẩm"></textarea>
+
+            <label for="price">Giá (VNĐ)</label>
+            <input type="number" id="price" th:field="*{price}" min="0" step="0.01" required>
+
+            <label>Ảnh hiện tại</label>
+            <div class="preview-container">
+                <img th:if="${product.imageUrl != null and !product.imageUrl.isEmpty()}"
+                     th:src="${product.imageUrl}" alt="Ảnh hiện tại">
+                <p th:if="${product.imageUrl == null or product.imageUrl.isEmpty()}">Không có ảnh hiển thị</p>
+            </div>
+
+
+
+            <label>Cập nhật ảnh mới (tùy chọn)</label>
+            <input type="file" id="imageFile" name="imageFile" accept="image/*" onchange="previewImage(event)">
+
+            <div class="or-divider">hoặc</div>
+
+            <input type="text" id="imageUrl" th:field="*{imageUrl}" placeholder="Dán link ảnh mới (tùy chọn)" oninput="previewFromUrl(event)">
+
+            <div class="preview-container" id="previewContainer">
+                <img id="preview" src="#" alt="Preview" style="display:none;">
+            </div>
+
+            <button type="submit" class="btn"><i class="fa-solid fa-save"></i> Lưu thay đổi</button>
+        </form>
+
+        <a th:href="@{/sellers/home}" class="back-link"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách</a>
+    </div>
+</div>
+
+<script>
+    // Hiển thị ảnh mới khi người dùng chọn tệp
+    function previewImage(event) {
+        const preview = document.getElementById('preview');
+        const file = event.target.files[0];
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+            document.getElementById('imageUrl').value = ''; // reset URL
+        }
+    }
+
+    // Hiển thị ảnh mới khi người dùng nhập URL
+    function previewFromUrl(event) {
+        const preview = document.getElementById('preview');
+        const url = event.target.value.trim();
+        if (url.startsWith('http')) {
+            preview.src = url;
+            preview.style.display = 'block';
+            document.getElementById('imageFile').value = ''; // reset file
+        } else {
+            preview.style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>

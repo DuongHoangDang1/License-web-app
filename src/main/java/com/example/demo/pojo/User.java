@@ -33,15 +33,6 @@ public class User {
     @Column(name = "fullname", nullable = true)
     private String fullname;
 
-    @Column(name = "seller_description", length = 500)
-    private String sellerDescription;
-
-    @Column(name = "seller_phone", length = 20)
-    private String sellerPhone;
-
-    @Column(nullable = false)
-    private Boolean isSeller = false;
-
 
     public String getFullname() {
         return fullname;
@@ -119,25 +110,6 @@ public class User {
 
     public void setResetToken(String resetToken) {
         this.resetToken = resetToken;
-    }
-
-    public String getSellerDescription() {
-        return sellerDescription;
-    }
-    public void setSellerDescription(String sellerDescription) {
-        this.sellerDescription = sellerDescription;
-    }
-    public String getSellerPhone() {
-        return sellerPhone;
-    }
-    public void setSellerPhone(String sellerPhone) {
-        this.sellerPhone = sellerPhone;
-    }
-    public boolean isSeller() {
-        return isSeller;
-    }
-    public void setSeller(boolean isSeller) {
-        this.isSeller = isSeller;
     }
 
 }

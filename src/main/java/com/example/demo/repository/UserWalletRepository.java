@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.pojo.User;
 import com.example.demo.pojo.UserWallet;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -9,4 +10,6 @@ public interface UserWalletRepository extends JpaRepository<UserWallet, Long> {
     <T> Optional<T> findByUserId(Long userId);
 
     void deleteByUserId(Long userId);
+    Optional<UserWallet> findByUser(User user);
+
 }

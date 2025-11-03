@@ -1,7 +1,13 @@
 package com.example.demo.service;
 
 import com.example.demo.pojo.DepositTransaction;
+import com.example.demo.pojo.User;
+import com.example.demo.pojo.UserWallet;
 import com.example.demo.repository.DepositTransactionRepository;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.UserWalletRepository;
+import jakarta.transaction.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,6 +65,42 @@ public class TransactionService {
         return transactionRepository.findTop3Depositors().stream()
                 .map(obj -> new TopDepositor((String) obj[0], ((Number) obj[1]).doubleValue()))
                 .collect(Collectors.toList());
+    }
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserWalletRepository userWalletRepository;
+
+    @Autowired
+    private DepositTransactionRepository depositTransactionRepository;
+
+    public void topupForAdmin(Long userId, Double amount) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy người dùng có ID: " + userId));
+
+        UserWallet wallet = userWalletRepository.findById(userId)
+                .orElseGet(() -> {
+                    UserWallet newWallet = new UserWallet();
+                    newWallet.setUser(user);
+                    newWallet.setUserId(userId);
+                    newWallet.setBalance(0.0);
+                    return newWallet;
+                });
+        double newBalance = wallet.getBalance() + amount;
+        wallet.setBalance(newBalance);
+        wallet.setUpdatedAt(LocalDateTime.now());
+        userWalletRepository.save(wallet);
+        DepositTransaction tx = new DepositTransaction();
+        tx.setUserId(userId);
+        tx.setAmount(amount.longValue());
+        tx.setTxnRef(UUID.randomUUID().toString());
+        tx.setStatus(DepositTransaction.Status.SUCCESS);
+        tx.setCreatedAt(LocalDateTime.now());
+        tx.setUpdatedAt(LocalDateTime.now());
+        depositTransactionRepository.save(tx);
+        System.out.printf("Nạp %.0f₫ cho userId=%d | Số dư mới: %.0f₫%n", amount, userId, newBalance);
     }
 
     public static class TopDepositor {

@@ -51,4 +51,7 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
+    public void deleteById(Long id) {
+        productRepository.deleteById(id);
+    }
 }
