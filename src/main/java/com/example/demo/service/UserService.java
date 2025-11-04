@@ -53,14 +53,8 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public List<User> findPendingSellers() {
-        return userRepository.findByRole("SELLER_PENDING");
+    public List<User> findPendingSellers(String role) {
+        return userRepository.findByRole(role);
     }
-
-
-    public void updateUser(User user) {
-        userRepository.save(user);
-    }
-
 
 }

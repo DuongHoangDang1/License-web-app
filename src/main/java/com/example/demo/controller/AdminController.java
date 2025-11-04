@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.pojo.User;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.TransactionService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,8 @@ public class AdminController {
     private UserService userService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/users")
     public String listUsers(Model model) {
@@ -142,32 +144,44 @@ public class AdminController {
     @PostMapping("/upgrade")
     public String upgradeSeller(Model model, Principal principal) {
         Optional<User> optionalUser = userService.findByUsername(principal.getName());
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            if (!"SELLER".equals(user.getRole())) {
-                userService.save(user);
-                model.addAttribute("pending", "Yêu cầu của bạn đang chờ phê duyệt từ quản trị viên.");
-            }
-            model.addAttribute("user", user);
-        } else {
+
+        if (optionalUser.isEmpty()) {
             model.addAttribute("error", "Không tìm thấy tài khoản người dùng.");
+            return "seller-register";
         }
+
+        User user = optionalUser.get();
+
+        if ("SELLER".equals(user.getRole())) {
+            model.addAttribute("success", "Bạn đã là Seller rồi!");
+        }
+        else if ("SELLER_PENDING".equals(user.getRole())) {
+            model.addAttribute("pending", "Yêu cầu của bạn đang chờ phê duyệt từ quản trị viên.");
+        }
+        else if ("USER".equals(user.getRole())) {
+            user.setRole("SELLER_PENDING");
+            userService.save(user);
+            model.addAttribute("pending", "Yêu cầu của bạn đang chờ phê duyệt từ quản trị viên.");
+        }
+
+        model.addAttribute("user", user);
         return "seller-register";
     }
 
 
+
     @GetMapping("/pending")
     public String viewPending(Model model) {
-        List<User> pendingUsers = userService.findPendingSellers();
+        List<User> pendingUsers = userService.findPendingSellers("SELLER_PENDING");
         model.addAttribute("pendingRequests", pendingUsers);
         return "seller-pending";
     }
 
 
+
     @PostMapping("/pending")
     public String requestUpgrade(Model model, Principal principal) {
         Optional<User> optionalUser = userService.findByUsername(principal.getName());
-
         if (optionalUser.isEmpty()) {
             model.addAttribute("error", "Không tìm thấy người dùng!");
             return "seller-register";
@@ -190,6 +204,7 @@ public class AdminController {
         model.addAttribute("user", user);
         return "seller-register";
     }
+
 
     @PostMapping("/approve/{id}")
     public String approveSeller(@PathVariable Long id) {
