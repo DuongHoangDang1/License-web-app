@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>License Management</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8fafc;
+        }
+        .container {
+            margin-top: 40px;
+        }
+        .status-active {
+            color: #16a34a !important;
+            font-weight: bold;
+        }
+        .status-expired {
+            color: #dc2626 !important;
+            font-weight: bold;
+        }
+        .status-inactive {
+            color: #9333ea !important;
+            font-weight: bold;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h2 class="mb-4">Danh sách License</h2>
+
+    <table class="table table-bordered table-striped align-middle">
+        <thead class="table-dark">
+        <tr>
+            <th>License Key</th>
+<!--            <th>User</th>-->
+            <th>Sản Phẩm</th>
+<!--            <th>Hạn Sử Dụng</th>-->
+            <th>Kích Hoạt</th>
+            <th>Hết Hạn</th>
+            <th>Trạng Thái</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="license : ${licenses}">
+            <td th:text="${license.licenseKey}"></td>
+<!--            <td th:text="${license.user != null ? license.user.username : 'N/A'}"></td>-->
+            <td th:text="${license.product != null ? license.product.name : 'N/A'}"></td>
+<!--            <td th:text="${license.product.}"></td>-->
+
+            <!-- Định dạng ngày theo pattern -->
+            <td th:text="${#temporals.format(license.issueDate, 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${#temporals.format(license.expiryDate, 'dd/MM/yyyy HH:mm')}"></td>
+
+            <!-- Màu theo trạng thái -->
+            <td th:text="${license.status}"
+                th:class="'status-' + ${license.status.toLowerCase()}">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <script>
+        console.log("[WS] Connecting...");
+        const socket = new SockJS(window.location.origin + '/ws');
+        const stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, frame => {
+            console.log("[WS] Connected:", frame);
+            stompClient.subscribe('/topic/reload', message => {
+                console.log("[WS] Received reload:", message.body);
+                location.reload();
+            });
+        }, error => {
+            console.error("[WS] Connection error:", error);
+        });
+
+    </script>
+</div>
+</body>
+</html>

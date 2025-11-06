@@ -4,38 +4,200 @@
     <meta charset="UTF-8">
     <title>Chi tiết đơn hàng</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/invoice-template.css}">
+    <style>
+        /* --- bố cục toàn màn hình --- */
+        body {
+            background-color: #e9ecef;
+            height: 100vh;
+            overflow: hidden;
+            font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* --- khung hóa đơn nổi --- */
+        #invoice-box {
+            position: fixed;
+            top: 5%;
+            left: 5%;
+            /*transform: translate(-50%, -50%);*/
+            cursor: grab;
+            z-index: 999;
+            width: 800px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            padding: 40px 50px;
+            user-select: none; /* ngăn bôi đen chữ khi kéo */
+        }
+
+        #invoice-box:active {
+            cursor: grabbing;
+        }
+
+        /* --- nút quay lại --- */
+        .btn-secondary {
+            color: white;
+            background-color: brown;
+            border-radius: 3px;
+            padding: 8px 18px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-1px);
+        }
+
+        /* --- tiêu đề --- */
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .invoice-header .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+
+        .invoice-header .info {
+            text-align: right;
+            font-size: 14px;
+        }
+
+        /* --- bảng --- */
+        .table {
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .table thead {
+            background-color: #4b49ac;
+            color: white;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .table th, .table td {
+            padding: 12px 14px;
+            text-align: center;
+        }
+
+        .total-section {
+            border-top: 2px solid #0d6efd;
+            margin-top: 30px;
+            padding-top: 10px;
+            text-align: right;
+        }
+
+        .total-section strong {
+            font-size: 18px;
+            color: #0d6efd;
+        }
+        h5 {
+            font-size: medium;
+        }
+    </style>
 </head>
-<body class="container mt-4">
+<body>
 
-<h3>Chi tiết đơn hàng #<span th:text="${order.id}"></span></h3>
-<p>Ngày đặt: <span th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}"></span></p>
-<p>Trạng thái: <strong th:text="${order.status}"></strong></p>
-<hr>
+<!-- HÓA ĐƠN -->
+<div id="invoice-box" class="container">
+    <div class="invoice-header">
+        <div class="logo">License</div>
+        <div class="info">
+            <p><strong>Ngày in:</strong>
+                <span th:text="${#temporals.format(T(java.time.LocalDateTime).now(), 'dd/MM/yyyy HH:mm')}"></span>
+            </p>
+            <p><strong>Mã đơn:</strong> <span th:text="${order.id}"></span></p>
+        </div>
+    </div>
 
-<table class="table table-bordered">
-    <thead>
-    <tr>
-        <th>Sản phẩm</th>
-        <th>Số lượng</th>
-        <th>Giá</th>
-        <th>Thành tiền</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="item : ${items}">
-        <td th:text="${item.product.name}"></td>
-        <td th:text="${item.quantity}"></td>
-        <td th:text="${#numbers.formatDecimal(item.unitPrice, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
-        <td th:text="${#numbers.formatDecimal(item.quantity * item.unitPrice, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
-    </tr>
-    </tbody>
-</table>
+    <h3>Chi tiết đơn hàng</h3>
+    <p>Ngày đặt: <span th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}"></span></p>
+    <p>Trạng thái: <strong th:text="${order.status}"></strong></p>
+    <hr>
 
-<h5 class="text-end">Tổng cộng:
-    <strong th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></strong>
-</h5>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Giá</th>
+            <th>Thành tiền</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${items}">
+            <td th:text="${item.product.name}"></td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${#numbers.formatDecimal(item.unitPrice, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
+            <td th:text="${#numbers.formatDecimal(item.quantity * item.unitPrice, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
+        </tr>
+        </tbody>
+    </table>
 
-<a class="btn btn-secondary mt-3" th:href="@{/order/history}">Quay lại</a>
+    <div class="total-section">
+        <h5>Tổng cộng:
+            <strong th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></strong>
+        </h5>
+    </div>
+
+    <div class="text-center mt-4">
+        <a class="btn btn-secondary" th:href="@{/order/history}">close</a>
+    </div>
+</div>
+
+<!-- SCRIPT DRAG -->
+<script>
+    const invoice = document.getElementById('invoice-box');
+    let isDragging = false;
+    let offsetX = 0, offsetY = 0;
+
+    invoice.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        // offsetX = e.clientX - invoice.offsetLeft;
+        // offsetY = e.clientY - invoice.offsetTop;
+        // invoice.style.cursor = 'grabbing';
+        // Lấy kích thước hiện tại của box
+        const rect = invoice.getBoundingClientRect();
+
+        // Bỏ transform để vị trí left/top chính xác theo viewport
+        invoice.style.transform = 'none';
+        invoice.style.left = rect.left + 'px';
+        invoice.style.top = rect.top + 'px';
+
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+        invoice.style.cursor = 'grabbing';
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+        invoice.style.cursor = 'grab';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+
+        const maxX = window.innerWidth - invoice.offsetWidth;
+        const maxY = window.innerHeight - invoice.offsetHeight;
+
+        let left = e.clientX - offsetX;
+        let top = e.clientY - offsetY;
+
+        left = Math.max(0, Math.min(left, maxX));
+        top = Math.max(0, Math.min(top, maxY));
+
+        invoice.style.left = left + 'px';
+        invoice.style.top = top + 'px';
+        invoice.style.transform = 'none';
+    });
+</script>
 
 </body>
 </html>
+

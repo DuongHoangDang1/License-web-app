@@ -27,6 +27,234 @@
         .bbb:hover {background-color:rgb(75 73 172 / 80%);}
     </style>
 
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .model {
+            display: none;
+        }
+
+        .model.active {
+            display: block;
+        }
+
+        .model1 {
+            display: none;
+        }
+
+        .model1.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 100px auto;
+            background: #fff;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 16px;
+        }
+
+        .amount-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 16px;
+            justify-content: center;
+        }
+
+        .amount-option {
+            background: #f0f0f0;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .amount-option:hover {
+            background: #007bff;
+            color: #fff;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-bottom: 16px;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .note {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            background-color: #6c757d;
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .back-home:hover {
+            background-color: #5a6268;
+        }
+    </style>
+
+    <style>
+        /* Tổng thể */
+        body {
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background-color: #f4f5f8;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .box-main {
+            max-width: 1000px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 24px 32px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        /* Bố cục 2 cột */
+        .box-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+        }
+
+        .box-side {
+            flex: 1 1 45%;
+        }
+
+        /* Ảnh */
+        .img-preview {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        /* Đánh giá sao */
+        .star-bar i {
+            color: #f6c700;
+            margin-right: 3px;
+        }
+
+        /* Nút */
+        .action-link {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid transparent;
+            text-decoration: none;
+            text-align: center;
+            min-width: 150px;
+            font-weight: 500;
+        }
+
+        .link-blue {
+            border: 1px solid #0066ff;
+            color: #0066ff;
+            background-color: white;
+        }
+        .link-blue:hover {
+            background-color: #0066ff;
+            color: white;
+        }
+
+        .link-red {
+            background-color: #e63946;
+            border: 1px solid #e63946;
+            color: white;
+        }
+        .link-red:hover {
+            background-color: #b92d37;
+        }
+
+        /* Khung mô tả và đánh giá */
+        .block-section {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-top: 32px;
+            padding: 22px 26px;
+        }
+
+        .block-title {
+            margin-bottom: 16px;
+            font-size: 20px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .text-gray {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 865px) {
+            .box-layout {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+
 </head>
 
 <body>
@@ -167,7 +395,7 @@
                     </a>
                     <div class="collapse" id="ui-basic">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" th:href="@{/wallet/topupvnp}">Nạp tiền</a></li>
+                            <li class="nav-item"> <span style="cursor: pointer" class="nav-link napTien">Nạp tiền</span></li>
                             <li class="nav-item"> <a class="nav-link" href="#">Rút tiền</a></li>
                             <li class="nav-item"> <a class="nav-link" th:href="@{/wallet/history}">Lịch sử giao dịch</a></li>
                         </ul>
@@ -190,6 +418,13 @@
                     <a class="nav-link" th:href="@{/feedback/form}">
                         <i class="icon-paper menu-icon"></i>
                         <span class="menu-title">Phản hồi</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/licenses}">
+                        <i class="icon-paper menu-icon"></i>
+                        <span class="menu-title">Kích hoạt</span>
                     </a>
                 </li>
 
@@ -288,7 +523,7 @@
                                    style="font-size: 1.1rem; color: #d32f2f;"></p>
 
                                 <!-- Nút hành động -->
-                                <a th:href="@{/products/product/{id}(id=${p.id})}"
+                                <a th:href="@{/product-detail/{id}(id=${p.id})}"
                                    class="btn btn-success w-100 mt-auto bbb"
                                    style="font-weight: 500; border-radius: 6px;">
                                     Chi tiết
@@ -326,8 +561,130 @@
     <!-- page-body-wrapper ends -->
 </div>
 
+<div class="model1" th:classappend="${openModal} ? ' active' : ''" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.3); z-index: 1002;" >
+    <div class="box-main" style="z-index: 1002; position: relative;
+    z-index: 1002;
+    top: 91px;">
+
+        <div class="box-layout">
+            <!-- Ảnh -->
+            <div class="box-side">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2n3VUYauwn3jOrzsHnk3Gmf-K6x37JHcSrA&s"
+                     alt="Product image" class="img-preview">
+            </div>
+
+            <!-- Thông tin -->
+            <div class="box-side" th:if="${product != null}">
+                <h2  th:text="${product.name}"></h2>
+
+                <div class="star-bar">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star"></i>
+                    <span class="text-gray">(0 đánh giá)</span>
+                </div>
+
+                <h3 style="color:#d62828; margin:16px 0;"
+                    th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + '₫'"></h3>
+
+                <p><strong>Thời hạn giấy phép:</strong>
+                    <span th:text="${product.licenseDurationDays + ' ngày'}"></span>
+                </p>
+
+                <div style="margin-top:20px;">
+                    <button class="action-link link-blue">Tải xuống</button>
+                    <a th:href="@{/order/checkout(productId=${product.id})}"
+                       class="action-link link-red">Mua ngay</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mô tả -->
+        <div class="block-section" th:if="${product != null}">
+            <h4 class="block-title">Mô tả chi tiết</h4>
+            <p class="text-gray" th:text="${product.description}">
+                Đây là mô tả chi tiết sản phẩm, trình bày trong khung đẹp mắt.
+            </p>
+        </div>
+
+        <!-- Đánh giá -->
+        <div class="block-section">
+            <h4 class="block-title">Đánh giá sản phẩm</h4>
+            <p class="text-gray"><em>Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá sản phẩm này!</em></p>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="model" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.3); z-index: 1002;" >
+    <div class="container" style="z-index: 1002;">
+        <h2>Nạp tiền vào ví</h2>
+
+        <form th:action="@{/web/wallet/topupvnp}" method="post">
+            <label for="amount">Nhập số tiền muốn nạp (VND)</label>
+            <input type="number" id="amount" name="amount" min="1000" placeholder="Ví dụ: 50000" required>
+
+            <div class="amount-options">
+                <div class="amount-option" onclick="setAmount(50000)">50.000đ</div>
+                <div class="amount-option" onclick="setAmount(100000)">100.000đ</div>
+                <div class="amount-option" onclick="setAmount(200000)">200.000đ</div>
+                <div class="amount-option" onclick="setAmount(500000)">500.000đ</div>
+            </div>
+
+            <button type="submit">Thanh toán qua VNPAY</button>
+
+            <p class="error" th:if="${param.error} == 'amount'">
+                Số tiền không hợp lệ!
+            </p>
+
+            <p class="note">
+                Sau khi thanh toán thành công, số tiền sẽ được cộng vào ví của bạn tự động.
+            </p>
+        </form>
+
+        <a href="web/home" class="back-home closeModal">Quay lại</a>
+    </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+    const napTien = document.querySelector(".napTien");
+    const model = document.querySelector(".model");
+    const btnClose  = document.querySelector('.closeModal');
+    // Khi bấm nút nạp ti
+    napTien.addEventListener('click', () => {
+        model.classList.add('active');
+    });
+    // Khi bấm nút đóng
+    btnClose.addEventListener('click', () => {
+        model.classList.remove('active');
+    });
+    // Khi click ra ngoài
+    window.addEventListener('click', (e) => {
+        if (e.target === model) {
+            model.classList.remove('active');
+        }
+    });
+
+    function setAmount(value) {
+        document.getElementById('amount').value = value;
+    }
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const modal = document.querySelector(".model1");
+        window.addEventListener("click", (e) => {
+            if (e.target === modal) modal.classList.remove("active");
+        });
+    });
+</script>
+
 <script th:if="${successMessage}">
     toastr.options = {
         "closeButton": true,
